@@ -4,6 +4,7 @@ public class EX_MA_LatchType {
 	
 	boolean MA_enable;
 	int aluResult;
+	int op2;
 	
 	public EX_MA_LatchType()
 	{
@@ -24,6 +25,14 @@ public class EX_MA_LatchType {
 
 	public void setALUResult(int aluResult) {
 		this.aluResult = aluResult;
+	}
+
+	public int getOp2() {
+		return this.op2;
+	}
+
+	public void setOp2(int op2) {
+		this.op2 = op2;
 	}
 
 }

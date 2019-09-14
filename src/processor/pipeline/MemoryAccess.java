@@ -20,13 +20,16 @@ public class MemoryAccess {
 
 		ControlUnit cu = containingProcessor.getControlUnit();
 
-		// If not load or store, simply pass aluResult into MA_RW latch
-		if(!cu.isLd() && !cu.isSt()) {
+		if(cu.isLd()) {
+			int ldResult;
+
+			ldResult = containingProcessor.getRegisterFile().getValue(EX_MA_Latch.getALUResult());
+			MA_RW_Latch.setLdResult(ldResult);
+		} else if(cu.isSt()) {
+			int reg = EX_MA_Latch.getALUResult();
+			int data = EX_MA_Latch.getOp2();
 			
-		} else if(cu.isLd()) {
-
-		} else if(cd.isSt()) {
-
+			containingProcessor.getRegisterFile().setValue(reg, data);
 		}
 	}
 
