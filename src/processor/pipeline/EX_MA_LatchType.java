@@ -3,6 +3,7 @@ package processor.pipeline;
 public class EX_MA_LatchType {
 	
 	boolean MA_enable;
+	int aluResult;
 	
 	public EX_MA_LatchType()
 	{
@@ -15,6 +16,14 @@ public class EX_MA_LatchType {
 
 	public void setMA_enable(boolean mA_enable) {
 		MA_enable = mA_enable;
+	}
+
+	public int getALUResult() {
+		return this.aluResult;
+	}
+
+	public void setALUResult(int aluResult) {
+		this.aluResult = aluResult;
 	}
 
 }

@@ -36,7 +36,7 @@ public class ArithmeticLogicUnit {
 
     public int getALUResult(){
         
-        if(controlUnit.isAdd()){
+        if(controlUnit.isAdd() || controlUnit.isLd() || controlUnit.isSt()){  // As [rs1+imm] is needed in Ld/St
             return A + B;
         }
 

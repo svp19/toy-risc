@@ -19,11 +19,45 @@ public class Execute {
 	public void performEX()
 	{
 		//TODO
+
+		// Get cu and alu for flags and arithmetic
+		ControlUnit cu = containingProcessor.getControlUnit();
+		ArithmeticLogicUnit alu = containingProcessor.getALUUnit();
 		
 		//Set branchPC
 		EX_IF_Latch.setBranchPC(OF_EX_Latch.getBranchTarget());
 
-	
+		// Get op1 and op2 from OF_EX latch
+		int op1 = OF_EX_Latch.getOp1();
+		int op2;
+		if(containingProcessor.getControlUnit().isImmediate()) {
+			op2 = OF_EX_Latch.getImmx();
+		} else {
+			op2 = OF_EX_Latch.getOp2();
+		}
+
+		// Execute the ALU part and store result in EX_MA latch
+		alu.setA(op1);
+		alu.setB(op2);
+
+		int aluResult = alu.getALUResult();
+		EX_MA_Latch.setALUResult(aluResult);
+
+		// Compute isBranchTaken from ALU flags and store it in EX_IF latch
+		boolean isBrTak = false;
+		if(cu.isJmp()) {
+			isBrTak = true;
+		} else if(cu.isBeq() && alu.getFlag("E")) {
+			isBrTak = true;
+		} else if(cu.isBgt() && alu.getFlag("GT")) {
+			isBrTak = true;
+		} else if(cu.isBlt() && alu.getFlag("LT")) {
+			isBrTak = true;
+		} else if(cu.isBne() && alu.getFlag("NE")) {
+			isBrTak = true;
+		}
+		
+		EX_IF_Latch.setIsBranchTaken(isBrTak);
 	}
 
 }

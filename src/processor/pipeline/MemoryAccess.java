@@ -17,6 +17,17 @@ public class MemoryAccess {
 	public void performMA()
 	{
 		//TODO
+
+		ControlUnit cu = containingProcessor.getControlUnit();
+
+		// If not load or store, simply pass aluResult into MA_RW latch
+		if(!cu.isLd() && !cu.isSt()) {
+			
+		} else if(cu.isLd()) {
+
+		} else if(cd.isSt()) {
+
+		}
 	}
 
 }
