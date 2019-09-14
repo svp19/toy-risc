@@ -36,6 +36,7 @@ public class Processor {
 
 	ControlUnit controlUnit;
 	ArithmeticLogicUnit arithmeticLogicUnit;
+	boolean isEnd;
 	
 	public Processor()
 	{
@@ -57,6 +58,7 @@ public class Processor {
 
 		controlUnit = new ControlUnit();
 		arithmeticLogicUnit = new ArithmeticLogicUnit();
+		isEnd = false;
 	}
 	
 	public void printState(int memoryStartingAddress, int memoryEndingAddress)
@@ -116,6 +118,14 @@ public class Processor {
 
 	public RegisterWrite getRWUnit() {
 		return RWUnit;
+	}
+
+	public boolean getIsEnd() {
+		return this.isEnd;
+	}
+
+	public void setIsEnd(boolean isEnd) {
+		this.isEnd = isEnd;
 	}
 
 }

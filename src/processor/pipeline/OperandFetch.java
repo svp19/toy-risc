@@ -1,7 +1,7 @@
 package processor.pipeline;
 
 import processor.Processor;
-
+import java.util.Scanner;
 
 
 public class OperandFetch {
@@ -29,7 +29,7 @@ public class OperandFetch {
             }
 
 			//Calc immx;
-			String immxStr = bin.substring(14);
+			String immxStr = bin.substring(15);
 			if(immxStr.charAt(0) == 1){
 				immxStr = twosComplement(immxStr);	
 				immxStr = "-" + immxStr;
@@ -41,33 +41,44 @@ public class OperandFetch {
             // System.out.println(immx);
 
             //Calc branchTarget
-            String instStr = bin.substring(5);
-            // right shift by 2
-            instStr += "00";
+            String instStr = bin.substring(15); // CHECK FOR JMP?
+            // Error: THIS IS NOT SIMPLERISC
+            // // right shift by 2
+            // instStr += "00";
             if(instStr.charAt(0) == 1){
 				instStr = twosComplement(instStr);	
 				instStr = "-" + instStr;
 			}
             int instInt = Integer.parseInt(instStr, 2);
-            int branchTarget = instInt + containingProcessor.getRegisterFile().getProgramCounter();
+            System.out.println("instBranchInt: " + instInt);
+            int branchTarget = instInt + containingProcessor.getRegisterFile().getProgramCounter() - 1;
             OF_EX_Latch.setBranchTarget(branchTarget);
 
-
+            System.out.println("Bin: " + bin);
             // Calc. op1
-            int op1Reg = Integer.parseInt(bin.substring(5,10));
+            int op1Reg = Integer.parseInt(bin.substring(5,10), 2);
+            System.out.println("op1Reg: " + op1Reg);
+            
             int op1 = containingProcessor.getRegisterFile().getValue(op1Reg);
             OF_EX_Latch.setOp1(op1);
 
             //Calc. op2 
             int op2Reg = -1;
+            
+            
             if( containingProcessor.getControlUnit().isSt() ){
-                op2Reg = Integer.parseInt(bin.substring(15,20));
+                op2Reg = Integer.parseInt(bin.substring(15,20), 2);
             } else {
-                op2Reg = Integer.parseInt(bin.substring(10,15));
+                op2Reg = Integer.parseInt(bin.substring(10,15), 2);
             }
+            System.out.println("op2Reg: " + op2Reg);
             int op2 = containingProcessor.getRegisterFile().getValue(op2Reg);
             OF_EX_Latch.setOp2(op2);
 
+            // // debug
+			// Scanner input = new Scanner(System.in);
+	    	// System.out.print("Enter an OF integer: ");
+    		// int number = input.nextInt();
 
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);

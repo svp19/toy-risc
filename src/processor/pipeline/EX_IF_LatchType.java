@@ -6,8 +6,9 @@ public class EX_IF_LatchType {
 	boolean isBranchTaken;
 	Integer branchPC;
 
-	public EX_IF_LatchType() {
-		
+	public EX_IF_LatchType() { // To ensure first cycle runs properly
+		IF_enable = false;
+		isBranchTaken = false;
 	}
 
 	public boolean getIF_enable() {

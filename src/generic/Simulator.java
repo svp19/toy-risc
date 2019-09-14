@@ -90,14 +90,20 @@ public class Simulator {
 		{
 			processor.getIFUnit().performIF();
 			Clock.incrementClock();
+			System.out.println("--------IFDONE");
 			processor.getOFUnit().performOF();
 			Clock.incrementClock();
+			System.out.println("--------OFDONE");
 			processor.getEXUnit().performEX();
 			Clock.incrementClock();
+			System.out.println("--------EXDONE");
 			processor.getMAUnit().performMA();
 			Clock.incrementClock();
+			System.out.println("--------MADONE");
 			processor.getRWUnit().performRW();
 			Clock.incrementClock();
+			System.out.println("--------RWDONE--------------");
+			setSimulationComplete(processor.getIsEnd());
 		}
 		
 		// TODO
