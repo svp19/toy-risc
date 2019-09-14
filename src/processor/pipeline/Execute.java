@@ -58,6 +58,9 @@ public class Execute {
 		}
 		
 		EX_IF_Latch.setIsBranchTaken(isBrTak);
+
+		// Set op2 in EX_MA Latch in case of store (where op2 is rd, the value to be stored)
+		EX_MA_Latch.setOp2(op2);
 	}
 
 }
