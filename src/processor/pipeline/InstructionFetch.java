@@ -26,6 +26,14 @@ public class InstructionFetch {
 			IF_OF_Latch.setInstruction(newInstruction);
 			System.out.println(Integer.toString(currentPC) + " LOOK " + Integer.toString(newInstruction));
 
+			// Instruction to Control Unit
+			containingProcessor.getControlUnit().setOpCode(newInstruction);
+
+			// Link Control unit to ALU
+			containingProcessor.getALUUnit().setControlUnit(
+				containingProcessor.getControlUnit()
+			);
+			
 			// Check isBranchTaken
 			if( EX_IF_Latch.getIsBranchTaken() ){
 				containingProcessor.getRegisterFile().setProgramCounter(

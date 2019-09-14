@@ -52,6 +52,23 @@ public class OperandFetch {
             int branchTarget = instInt + containingProcessor.getRegisterFile().getProgramCounter();
             OF_EX_Latch.setBranchTarget(branchTarget);
 
+
+            // Calc. op1
+            int op1Reg = Integer.parseInt(bin.substring(5,10));
+            int op1 = containingProcessor.getRegisterFile().getValue(op1Reg);
+            OF_EX_Latch.setOp1(op1);
+
+            //Calc. op2 
+            int op2Reg = -1;
+            if( containingProcessor.getControlUnit().isSt() ){
+                op2Reg = Integer.parseInt(bin.substring(15,20));
+            } else {
+                op2Reg = Integer.parseInt(bin.substring(10,15));
+            }
+            int op2 = containingProcessor.getRegisterFile().getValue(op2Reg);
+            OF_EX_Latch.setOp2(op2);
+
+
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);
 		}

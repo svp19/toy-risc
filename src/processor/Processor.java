@@ -13,6 +13,8 @@ import processor.pipeline.OF_EX_LatchType;
 import processor.pipeline.OperandFetch;
 import processor.pipeline.RegisterFile;
 import processor.pipeline.RegisterWrite;
+import processor.pipeline.ControlUnit;
+import processor.pipeline.ArithmeticLogicUnit;
 
 public class Processor {
 	
@@ -31,6 +33,9 @@ public class Processor {
 	Execute EXUnit;
 	MemoryAccess MAUnit;
 	RegisterWrite RWUnit;
+
+	ControlUnit controlUnit;
+	ArithmeticLogicUnit arithmeticLogicUnit;
 	
 	public Processor()
 	{
@@ -49,6 +54,9 @@ public class Processor {
 		EXUnit = new Execute(this, OF_EX_Latch, EX_MA_Latch, EX_IF_Latch);
 		MAUnit = new MemoryAccess(this, EX_MA_Latch, MA_RW_Latch);
 		RWUnit = new RegisterWrite(this, MA_RW_Latch, IF_EnableLatch);
+
+		controlUnit = new ControlUnit();
+		arithmeticLogicUnit = new ArithmeticLogicUnit();
 	}
 	
 	public void printState(int memoryStartingAddress, int memoryEndingAddress)
@@ -72,6 +80,22 @@ public class Processor {
 
 	public void setMainMemory(MainMemory mainMemory) {
 		this.mainMemory = mainMemory;
+	}
+
+	public ControlUnit getControlUnit() {
+		return controlUnit;
+	}
+
+	public void setControlUnit(ControlUnit controlUnit) {
+		this.controlUnit = controlUnit;
+	}
+
+	public ArithmeticLogicUnit getALUUnit() {
+		return this.arithmeticLogicUnit;
+	}
+
+	public void setALUUnit(ArithmeticLogicUnit arithmeticLogicUnit) {
+		this.arithmeticLogicUnit = arithmeticLogicUnit;
 	}
 
 	public InstructionFetch getIFUnit() {

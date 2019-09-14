@@ -19,6 +19,11 @@ public class Execute {
 	public void performEX()
 	{
 		//TODO
+		
+		//Set branchPC
+		EX_IF_Latch.setBranchPC(OF_EX_Latch.getBranchTarget());
+
+	
 	}
 
 }
