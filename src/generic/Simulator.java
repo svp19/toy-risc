@@ -32,8 +32,7 @@ public class Simulator {
 		 *     x2 = 65535
 		 */
 
-		// Load program into memory
-
+		/*1.  Load program into memory*/
 		// Fetch mainMemory from processor
 		MainMemory mainMemory = processor.getMainMemory();
 
@@ -44,8 +43,8 @@ public class Simulator {
 			DataInputStream dis = new DataInputStream(fin);			
 			
 			// Read PC
-			int PC = dis.readInt();
-			System.out.println(i);
+			int main = dis.readInt();
+			System.out.println(main);
 
 			// Read Int from file
 			int read4Bytes = 0, i = 0;
@@ -58,8 +57,22 @@ public class Simulator {
 			}
 			dis.close();
 
+			// Set updated memory for processor
+			processor.setMainMemory(mainMemory);
+
+			System.out.println("Nearly Done");
+
+			/* 2. Set PC to main */
+			processor.getRegisterFile().setProgramCounter(main);
+			
+			/*3. Set x0, x1, x2*/
+			processor.getRegisterFile().setValue(0, 0);
+			processor.getRegisterFile().setValue(1, 65535);
+			processor.getRegisterFile().setValue(2, 65535);
+
 			// Debugging - Print Memory
 			System.out.println(mainMemory.getContentsAsString(0, 30));
+
 		}
 		catch(FileNotFoundException fe)
 		{ 
@@ -69,12 +82,6 @@ public class Simulator {
 		{
 			System.out.println("IOException : " + ioe);
 		}
-
-		// Set updated memory for processor
-		processor.setMainMemory(mainMemory);
-
-		System.out.println("Nearly Done");
-
 	}
 	
 	public static void simulate()
