@@ -25,7 +25,7 @@ public class Execute {
 		ControlUnit cu = containingProcessor.getControlUnit();
 		ArithmeticLogicUnit alu = containingProcessor.getALUUnit();
 		
-		//Set branchPC
+		// Set branchPC
 		EX_IF_Latch.setBranchPC(OF_EX_Latch.getBranchTarget());
 
 		// Get op1 and op2 from OF_EX latch
@@ -46,6 +46,13 @@ public class Execute {
 		int aluResult = alu.getALUResult();
 		EX_MA_Latch.setALUResult(aluResult);
 		System.out.println("aluResult: " + Integer.toString(aluResult));
+
+		// if isDiv write mod to Register x31
+		if(cu.isDiv()){
+			int mod = alu.getMod();
+			containingProcessor.getRegisterFile().setValue(31, mod);
+		}
+
 		// Compute isBranchTaken from ALU flags and store it in EX_IF latch
 		boolean isBrTak = false;
 		if(cu.isJmp()) {

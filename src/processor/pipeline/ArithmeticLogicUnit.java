@@ -82,6 +82,10 @@ public class ArithmeticLogicUnit {
         return 0;
     }
 
+    public int getMod(){
+        return A % B;
+    }
+
     public boolean getFlag(String type){
         switch(type){
             case "E": return A == B;
