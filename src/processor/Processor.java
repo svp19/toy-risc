@@ -38,6 +38,10 @@ public class Processor {
 	ArithmeticLogicUnit arithmeticLogicUnit;
 	boolean isEnd;
 	
+	// Stats
+	int numIns;
+	int numCycles;
+	
 	public Processor()
 	{
 		registerFile = new RegisterFile();
@@ -59,6 +63,9 @@ public class Processor {
 		controlUnit = new ControlUnit();
 		arithmeticLogicUnit = new ArithmeticLogicUnit();
 		isEnd = false;
+
+		numIns = 0;
+		numCycles = 0;
 	}
 	
 	public void printState(int memoryStartingAddress, int memoryEndingAddress)
@@ -126,6 +133,22 @@ public class Processor {
 
 	public void setIsEnd(boolean isEnd) {
 		this.isEnd = isEnd;
+	}
+
+	public int getNumIns() {
+		return this.numIns;
+	}
+
+	public void setNumIns(int numIns) {
+		this.numIns = numIns;
+	}
+
+	public int getNumCycles() {
+		return this.numCycles;
+	}
+
+	public void setNumCycles(int numCycles) {
+		this.numCycles = numCycles;
 	}
 
 }

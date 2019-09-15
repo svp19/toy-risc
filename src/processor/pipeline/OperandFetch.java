@@ -31,7 +31,7 @@ public class OperandFetch {
 
 			//Calc immx;
 			String immxStr = bin.substring(15);
-			if(immxStr.charAt(0) == 1){
+			if(immxStr.charAt(0) == '1'){
 				immxStr = twosComplement(immxStr);	
 				immxStr = "-" + immxStr;
 			}

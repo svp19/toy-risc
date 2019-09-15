@@ -34,9 +34,13 @@ public class InstructionFetch {
 				System.out.println("[BRANCH]");
 			}
 			
+			// For every new inst it fetches, numIns++, numCycles++;
 			int newInstruction = containingProcessor.getMainMemory().getWord(currentPC);
 			IF_OF_Latch.setInstruction(newInstruction);
 			System.out.println("PC: " + Integer.toString(currentPC) + " ,inst: " + Integer.toString(newInstruction));
+			
+			containingProcessor.setNumIns(containingProcessor.getNumIns() + 1);
+			containingProcessor.setNumCycles(containingProcessor.getNumCycles() + 1);
 			
 
 			// Instruction to Control Unit
