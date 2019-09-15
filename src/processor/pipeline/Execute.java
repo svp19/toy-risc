@@ -71,7 +71,8 @@ public class Execute {
 		EX_IF_Latch.setIsBranchTaken(isBrTak);
 		
 		// Set op2 in EX_MA Latch in case of store (where op2 is rd, the value to be stored)
-		EX_MA_Latch.setOp2(op2);
+		// Get op2 from OP_EX Latch
+		EX_MA_Latch.setOp2(OF_EX_Latch.getOp2());
 
 		OF_EX_Latch.setEX_enable(false);
 		
