@@ -19,7 +19,7 @@ public class ControlUnit {
         }
         this.opCode = bin.substring(0, 5);
         this.opCodeInt = Integer.parseInt(opCode, 2);
-        System.out.println("CU_OPCODE => " + opCode);
+        System.out.println("OPCODE => " + opCode);
     }
     
     // Memory Instruction Flags 

@@ -23,6 +23,17 @@ public class InstructionFetch {
 		if(IF_EnableLatch.isIF_enable())
 		{
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter();
+			// Check isBranchTaken
+			if( EX_IF_Latch.getIsBranchTaken() ){
+
+				// Get PC that was accidentally incremented
+				currentPC = EX_IF_Latch.getBranchPC();
+				containingProcessor.getRegisterFile().setProgramCounter(
+					EX_IF_Latch.getBranchPC()
+				);
+				System.out.println("[BRANCH]");
+			}
+			
 			int newInstruction = containingProcessor.getMainMemory().getWord(currentPC);
 			IF_OF_Latch.setInstruction(newInstruction);
 			System.out.println("PC: " + Integer.toString(currentPC) + " ,inst: " + Integer.toString(newInstruction));
@@ -37,22 +48,8 @@ public class InstructionFetch {
 			);
 			
 			// Check isBranchTaken
-			if( EX_IF_Latch.getIsBranchTaken() ){
-
-				// Get PC that was accidentally incremented
-				currentPC = EX_IF_Latch.getBranchPC();
-				containingProcessor.getRegisterFile().setProgramCounter(
-					EX_IF_Latch.getBranchPC()
-				);
-				System.out.println("BranchPC: " + Integer.toString(currentPC));
-				// Update with new instruction after Branch
-				currentPC = containingProcessor.getRegisterFile().getProgramCounter();
-				newInstruction = containingProcessor.getMainMemory().getWord(currentPC);
-				IF_OF_Latch.setInstruction(newInstruction);
-				System.out.println("[BRANCH] PC: " + Integer.toString(currentPC) + " ,inst: " + Integer.toString(newInstruction));
-			} else {
-				containingProcessor.getRegisterFile().setProgramCounter(currentPC + 1);	
-			}
+			containingProcessor.getRegisterFile().setProgramCounter(currentPC + 1);	
+			
 
 			// // debug
 			// Scanner input = new Scanner(System.in);

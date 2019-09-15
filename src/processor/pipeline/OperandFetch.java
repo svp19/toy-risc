@@ -27,6 +27,7 @@ public class OperandFetch {
             if( inst > 0 ){
                 bin = String.format("%32s", Integer.toBinaryString(inst)).replace(' ', '0');
             }
+            System.out.println("Binary Instruction: " + bin);
 
 			//Calc immx;
 			String immxStr = bin.substring(15);
@@ -50,18 +51,16 @@ public class OperandFetch {
 				instStr = "-" + instStr;
 			}
             int instInt = Integer.parseInt(instStr, 2);
-            System.out.println("instBranchInt: " + instInt);
             int branchTarget = instInt + containingProcessor.getRegisterFile().getProgramCounter() - 1;
             OF_EX_Latch.setBranchTarget(branchTarget);
-
-            System.out.println("Bin: " + bin);
+            System.out.println("branchTarget: " + instInt);
+            
             // Calc. op1
             int op1Reg = Integer.parseInt(bin.substring(5,10), 2);
-            System.out.println("op1Reg: " + op1Reg);
-            
             int op1 = containingProcessor.getRegisterFile().getValue(op1Reg);
             OF_EX_Latch.setOp1(op1);
-
+            System.out.println("op1Reg: " + op1Reg + " ,op1: " + Integer.toString(op1));
+            
             //Calc. op2 
             int op2Reg = -1;
             
@@ -71,10 +70,9 @@ public class OperandFetch {
             } else {
                 op2Reg = Integer.parseInt(bin.substring(10,15), 2);
             }
-            System.out.println("op2Reg: " + op2Reg);
             int op2 = containingProcessor.getRegisterFile().getValue(op2Reg);
             OF_EX_Latch.setOp2(op2);
-
+            System.out.println("op2Reg: " + op2Reg + " ,op2: " + Integer.toString(op2));
             // // debug
 			// Scanner input = new Scanner(System.in);
 	    	// System.out.print("Enter an OF integer: ");
