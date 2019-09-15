@@ -62,10 +62,10 @@ public class RegisterWrite {
 				containingProcessor.setIsEnd(true);
 			}
 
-			// debug
-			Scanner input = new Scanner(System.in);
-	    	System.out.print("Enter any integer to continue: ");
-    		int number = input.nextInt();
+			// // debug
+			// Scanner input = new Scanner(System.in);
+	    	// System.out.print("Enter any integer to continue: ");
+    		// int number = input.nextInt();
 				
 		}
 		
