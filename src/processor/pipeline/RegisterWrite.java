@@ -59,7 +59,7 @@ public class RegisterWrite {
 			
 			// if instruction being processed is an end instruction, remember to call Simulator.setSimulationComplete(true);
 			if( cu.isEnd() ){
-				// containingProcessor.setIsEnd(true);
+				containingProcessor.setIsEnd(true);
 			}
 
 			// debug
