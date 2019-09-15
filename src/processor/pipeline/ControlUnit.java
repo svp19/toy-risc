@@ -24,7 +24,8 @@ public class ControlUnit {
     
     // Memory Instruction Flags 
     public boolean isSt() {
-        if( opCode.equals(10111) ){
+        if( opCode.equals("10111") ){
+            System.out.println("STORE");
             return true;
         }
         return false; 
