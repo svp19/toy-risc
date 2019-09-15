@@ -1,5 +1,6 @@
 package processor.pipeline;
 
+import java.util.Scanner;
 import processor.Processor;
 
 public class MemoryAccess {
@@ -27,11 +28,17 @@ public class MemoryAccess {
 			System.out.println("getALUResult: " + Integer.toString(EX_MA_Latch.getALUResult()));
 			System.out.println("ldResult: " + Integer.toString(ldResult));
 		} else if(cu.isSt()) {
-			int reg = EX_MA_Latch.getALUResult();
+			int location = EX_MA_Latch.getALUResult();
 			int data = EX_MA_Latch.getOp2();
-			System.out.println("reg: " + Integer.toString(reg));
+			System.out.println("location: " + Integer.toString(location));
 			System.out.println("data: " + Integer.toString(data));
-			containingProcessor.getMainMemory().setWord(reg, data);
+			containingProcessor.getMainMemory().setWord(location, data);
+
+			// debug
+			// Scanner input = new Scanner(System.in);
+			// System.out.println(containingProcessor.getMainMemory().getWord(location));
+	    	// System.out.print("Storing...Enter any integer to continue: ");
+    		// int number = input.nextInt();
 		}
 
 		
