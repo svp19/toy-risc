@@ -19,19 +19,20 @@ public class ControlUnit {
         }
         this.opCode = bin.substring(0, 5);
         this.opCodeInt = Integer.parseInt(opCode, 2);
-        System.out.println("CU_OPCODE => " + opCode);
+        System.out.println("OPCODE => " + opCode);
     }
     
     // Memory Instruction Flags 
     public boolean isSt() {
-        if( opCode == "10111" ){
+        if( opCode.equals("10111") ){
+            System.out.println("STORE");
             return true;
         }
         return false; 
     }
 
     public boolean isLd() {
-        if( opCode == "10110" ){
+        if( opCode.equals("10110") ){
             return true;
         }
         return false; 
@@ -39,35 +40,35 @@ public class ControlUnit {
 
     // Control Flow Instruction Flags
     public boolean isJmp() {
-        if( opCode == "11000" ){
+        if( opCode.equals("11000") ){
             return true;
         }
         return false; 
     }
 
     public boolean isBeq() {
-        if( opCode == "11001" ){
+        if( opCode.equals("11001") ){
             return true;
         }
         return false; 
     }
 
     public boolean isBne() {
-        if( opCode == "11010" ){
+        if( opCode.equals("11010") ){
             return true;
         }
         return false; 
     }
 
     public boolean isBlt() {
-        if( opCode == "11011" ){
+        if( opCode.equals("11011") ){
             return true;
         }
         return false; 
     }
 
     public boolean isBgt() {
-        if( opCode == "11100" ){
+        if( opCode.equals("11100") ){
             return true;
         }
         return false; 
@@ -75,6 +76,13 @@ public class ControlUnit {
 
 
     // Artihmetic Instruction Flags
+    public boolean isR3(){
+        if( opCodeInt < 21 && (opCodeInt % 2 == 0) ) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean isImmediate() {
         
         if( opCodeInt <= 23 && (opCodeInt % 2 == 1) ) {
@@ -170,4 +178,11 @@ public class ControlUnit {
         return false;
     }
 
+    // Special Instruction Flags (end) 
+    public boolean isEnd() {
+        if( opCode.equals("11101") ){
+            return true;
+        }
+        return false; 
+    }
 }

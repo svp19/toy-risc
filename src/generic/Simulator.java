@@ -5,11 +5,13 @@ import java.util.Scanner;
 import processor.Clock;
 import processor.Processor;
 import processor.memorysystem.MainMemory;
+import generic.Statistics;
 
 public class Simulator {
 		
 	static Processor processor;
 	static boolean simulationComplete;
+	static Statistics stats;
 	
 	public static void setupSimulation(String assemblyProgramFile, Processor p)
 	{
@@ -17,6 +19,7 @@ public class Simulator {
 		loadProgram(assemblyProgramFile);
 		
 		simulationComplete = false;
+		stats = new Statistics();
 	}
 	
 	static void loadProgram(String assemblyProgramFile)
@@ -88,20 +91,30 @@ public class Simulator {
 	{
 		while(simulationComplete == false)
 		{
+			System.out.println("--------IF--------");
 			processor.getIFUnit().performIF();
 			Clock.incrementClock();
+			System.out.println("--------OF--------");
 			processor.getOFUnit().performOF();
 			Clock.incrementClock();
+			System.out.println("--------EX--------");
 			processor.getEXUnit().performEX();
 			Clock.incrementClock();
+			System.out.println("--------MA--------");
 			processor.getMAUnit().performMA();
 			Clock.incrementClock();
+			System.out.println("--------RW--------");
 			processor.getRWUnit().performRW();
 			Clock.incrementClock();
+			System.out.println("--------  --------");
+			System.out.println("\n\n");
+			setSimulationComplete(processor.getIsEnd());
 		}
 		
 		// TODO
 		// set statistics
+		stats.setNumberOfInstructions(processor.getNumIns());
+		stats.setNumberOfCycles(processor.getNumCycles());
 	}
 	
 	public static void setSimulationComplete(boolean value)
