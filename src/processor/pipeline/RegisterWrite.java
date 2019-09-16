@@ -30,7 +30,7 @@ public class RegisterWrite {
 			if( cu.isLd() ){
 				result = MA_RW_Latch.getLdResult();
 			}
-			System.out.println("Result: " + Integer.toString(result));
+			// System.out.println("Result: " + Integer.toString(result));
 
 		//Get 'rd' from instruction. 
 			//	Can get instruction from IF_OF_Latch instead
@@ -51,7 +51,7 @@ public class RegisterWrite {
 				rdStr = instStr.substring(15, 20);
 			}
 			int rd = Integer.parseInt(rdStr, 2);
-			System.out.println("rd: " + Integer.toString(rd));
+			// System.out.println("rd: " + Integer.toString(rd));
 		// If isWb then write back to register
 			if( cu.isWb() ){
 				containingProcessor.getRegisterFile().setValue(rd, result);
@@ -64,7 +64,7 @@ public class RegisterWrite {
 
 			// // debug
 			// Scanner input = new Scanner(System.in);
-	    	// System.out.print("Enter any integer to continue: ");
+	    	// // System.out.print("Enter any integer to continue: ");
     		// int number = input.nextInt();
 				
 		}

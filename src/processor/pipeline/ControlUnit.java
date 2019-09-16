@@ -19,13 +19,11 @@ public class ControlUnit {
         }
         this.opCode = bin.substring(0, 5);
         this.opCodeInt = Integer.parseInt(opCode, 2);
-        System.out.println("OPCODE => " + opCode);
     }
     
     // Memory Instruction Flags 
     public boolean isSt() {
         if( opCode.equals("10111") ){
-            System.out.println("STORE");
             return true;
         }
         return false; 

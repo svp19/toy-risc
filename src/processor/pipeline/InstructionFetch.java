@@ -31,13 +31,13 @@ public class InstructionFetch {
 				containingProcessor.getRegisterFile().setProgramCounter(
 					EX_IF_Latch.getBranchPC()
 				);
-				System.out.println("[BRANCH]");
+				// System.out.println("[BRANCH]");
 			}
 			
 			// For every new inst it fetches, numIns++, numCycles++;
 			int newInstruction = containingProcessor.getMainMemory().getWord(currentPC);
 			IF_OF_Latch.setInstruction(newInstruction);
-			System.out.println("PC: " + Integer.toString(currentPC) + " ,inst: " + Integer.toString(newInstruction));
+			// System.out.println("PC: " + Integer.toString(currentPC) + " ,inst: " + Integer.toString(newInstruction));
 			
 			containingProcessor.setNumIns(containingProcessor.getNumIns() + 1);
 			containingProcessor.setNumCycles(containingProcessor.getNumCycles() + 1);
@@ -57,7 +57,7 @@ public class InstructionFetch {
 
 			// // debug
 			// Scanner input = new Scanner(System.in);
-	    	// System.out.print("Enter an integer: ");
+	    	// // System.out.print("Enter an integer: ");
     		// int number = input.nextInt();
 
 			IF_EnableLatch.setIF_enable(false);

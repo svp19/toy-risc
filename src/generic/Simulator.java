@@ -47,7 +47,7 @@ public class Simulator {
 			
 			// Read PC
 			int main = dis.readInt();
-			System.out.println(main);
+			// System.out.println(main);
 
 			// Read Int from file
 			int read4Bytes = 0, i = 0;
@@ -55,7 +55,7 @@ public class Simulator {
 			{
 				read4Bytes = dis.readInt();
 				mainMemory.setWord(i, read4Bytes);
-				System.out.println(read4Bytes);
+				// System.out.println(read4Bytes);
 				i ++ ;
 			}
 			dis.close();
@@ -63,7 +63,7 @@ public class Simulator {
 			// Set updated memory for processor
 			processor.setMainMemory(mainMemory);
 
-			System.out.println("Nearly Done");
+			// System.out.println("Nearly Done");
 
 			/* 2. Set PC to main */
 			processor.getRegisterFile().setProgramCounter(main);
@@ -74,7 +74,7 @@ public class Simulator {
 			processor.getRegisterFile().setValue(2, 65535);
 
 			// Debugging - Print Memory
-			System.out.println(mainMemory.getContentsAsString(0, 30));
+			// System.out.println(mainMemory.getContentsAsString(0, 30));
 
 		}
 		catch(FileNotFoundException fe)
@@ -91,23 +91,16 @@ public class Simulator {
 	{
 		while(simulationComplete == false)
 		{
-			System.out.println("--------IF--------");
 			processor.getIFUnit().performIF();
 			Clock.incrementClock();
-			System.out.println("--------OF--------");
 			processor.getOFUnit().performOF();
 			Clock.incrementClock();
-			System.out.println("--------EX--------");
 			processor.getEXUnit().performEX();
 			Clock.incrementClock();
-			System.out.println("--------MA--------");
 			processor.getMAUnit().performMA();
 			Clock.incrementClock();
-			System.out.println("--------RW--------");
 			processor.getRWUnit().performRW();
 			Clock.incrementClock();
-			System.out.println("--------  --------");
-			System.out.println("\n\n");
 			setSimulationComplete(processor.getIsEnd());
 		}
 		
