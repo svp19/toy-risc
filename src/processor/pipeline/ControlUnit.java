@@ -4,8 +4,27 @@ public class ControlUnit {
 
     String opCode;
     int opCodeInt;
+    boolean isOverflow;
+    int overflow;
 
     public ControlUnit() {
+        isOverflow = false;
+    }
+
+    public int getOverflow() {
+        return this.overflow;
+    }
+
+    public void setOverflow(int overflow) {
+        this.overflow = overflow;
+    }    
+
+    public boolean getIsOverflow() {
+        return this.isOverflow;
+    }
+
+    public void setIsOverflow(boolean isOverflow) {
+        this.isOverflow = isOverflow;
     }
 
     public String getOpCode() {

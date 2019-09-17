@@ -53,6 +53,12 @@ public class Execute {
 			containingProcessor.getRegisterFile().setValue(31, mod);
 		}
 
+		// if overflow occured
+		if(cu.getIsOverflow()) {
+			int overflow = cu.getOverflow();
+			containingProcessor.getRegisterFile().setValue(31, overflow);
+		}
+
 		// Compute isBranchTaken from ALU flags and store it in EX_IF latch
 		boolean isBrTak = false;
 		if(cu.isJmp()) {

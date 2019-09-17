@@ -6,8 +6,10 @@ public class ArithmeticLogicUnit {
     int A;
     int B;
     ControlUnit controlUnit;
+    int MAX_INT;
 
     public ArithmeticLogicUnit() {
+        MAX_INT = 2147483647;
     }
     
     public ControlUnit getControlUnit() {
@@ -36,7 +38,23 @@ public class ArithmeticLogicUnit {
 
     public int getALUResult(){
         
-        if(controlUnit.isAdd() || controlUnit.isLd() || controlUnit.isSt()){  // As [rs1+imm] is needed in Ld/St
+        if(controlUnit.isLd() || controlUnit.isSt()) {  // As [rs1+imm] is needed in Ld/St
+            return A + B;
+        }
+
+        if(controlUnit.isAdd()){
+            long temp = A + B;
+            if(temp - MAX_INT > 0) {
+                controlUnit.setIsOverflow(true);
+                
+                String binStr = Long.toString(temp);
+                String overflowStr = binStr.substring(0, 32);
+                String resultStr = binStr.substring(32);
+
+                controlUnit.setOverflow(Integer.parseInt(overflowStr));
+                return Integer.parseInt(resultStr);
+            }
+
             return A + B;
         }
 
@@ -45,6 +63,18 @@ public class ArithmeticLogicUnit {
         }
 
         if(controlUnit.isMul()){
+            long temp = A * B;
+            if(temp - MAX_INT > 0) {
+                controlUnit.setIsOverflow(true);
+                
+                String binStr = Long.toString(temp);
+                String overflowStr = binStr.substring(0, 32);
+                String resultStr = binStr.substring(32);
+
+                controlUnit.setOverflow(Integer.parseInt(overflowStr));
+                return Integer.parseInt(resultStr);
+            }
+
             return A * B;
         }
 
@@ -69,6 +99,18 @@ public class ArithmeticLogicUnit {
         }
 
         if(controlUnit.isSll()){
+            long temp = A << B;
+            if(temp - MAX_INT > 0) {
+                controlUnit.setIsOverflow(true);
+                
+                String binStr = Long.toString(temp);
+                String overflowStr = binStr.substring(0, 32);
+                String resultStr = binStr.substring(32);
+
+                controlUnit.setOverflow(Integer.parseInt(overflowStr));
+                return Integer.parseInt(resultStr);
+            }
+
             return A << B;
         }
 

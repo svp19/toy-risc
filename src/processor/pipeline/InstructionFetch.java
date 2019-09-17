@@ -58,7 +58,10 @@ public class InstructionFetch {
 			// // debug
 			// Scanner input = new Scanner(System.in);
 	    	// System.out.print("Enter an integer: ");
-    		// int number = input.nextInt();
+			// int number = input.nextInt();
+			
+			// long temp = fix+3;
+			// System.out.println((temp+2) >> 32);
 
 			IF_EnableLatch.setIF_enable(false);
 			IF_OF_Latch.setOF_enable(true);
