@@ -91,21 +91,23 @@ public class Simulator {
 	{
 		while(simulationComplete == false)
 		{
-			System.out.println("--------IF--------");
-			processor.getIFUnit().performIF();
-			Clock.incrementClock();
-			System.out.println("--------OF--------");
-			processor.getOFUnit().performOF();
-			Clock.incrementClock();
-			System.out.println("--------EX--------");
-			processor.getEXUnit().performEX();
-			Clock.incrementClock();
-			System.out.println("--------MA--------");
-			processor.getMAUnit().performMA();
-			Clock.incrementClock();
 			System.out.println("--------RW--------");
 			processor.getRWUnit().performRW();
+			// Clock.incrementClock();
+			System.out.println("--------MA--------");
+			processor.getMAUnit().performMA();
+			// Clock.incrementClock();
+			System.out.println("--------EX--------");
+			processor.getEXUnit().performEX();
+			// Clock.incrementClock();
+			System.out.println("--------OF--------");
+			processor.getOFUnit().performOF();
+			// Clock.incrementClock();
+			System.out.println("--------IF--------");
+			processor.getIFUnit().performIF();
+			
 			Clock.incrementClock();
+
 			System.out.println("--------  --------");
 			System.out.println("\n\n");
 			setSimulationComplete(processor.getIsEnd());
