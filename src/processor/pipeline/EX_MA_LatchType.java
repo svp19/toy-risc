@@ -24,7 +24,7 @@ public class EX_MA_LatchType {
 			this.instruction = -1;
 			this.op2 = -1;
 			this.aluResult = -1;
-			controlUnit.setOpCode(-1);
+			// controlUnit.setOpCode(-1);
 		}
 	}
 

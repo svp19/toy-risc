@@ -134,6 +134,11 @@ public class OperandFetch {
                 op2Reg = -1; 
             }
 
+            //if load, ignore op2(rd)
+            if(opCode == 22){
+                op2Reg = -1;
+            }            
+
             // Get instructions from other latches
             int OF_EX_inst, EX_MA_inst, MA_RW_inst;
 
@@ -142,11 +147,17 @@ public class OperandFetch {
             MA_RW_inst = containingProcessor.getRWUnit().MA_RW_Latch.getInstruction();
 
             // Instructions till opcode 22 only write back, hence only they contribute to RAW hazards
-            if(containingProcessor.getOpCode(OF_EX_inst) <= 22 && !containingProcessor.getOF_EX_Nop()) {
+            // Data hazard of Div only requires one nop
+            int opCode_OFEX = containingProcessor.getOpCode(OF_EX_inst);
+            if(opCode_OFEX <= 22 && !containingProcessor.getOF_EX_Nop()) {
                 int rdReg = containingProcessor.getRd(OF_EX_inst);
-                System.out.println("OF_EX_NOP" + Boolean.toString(OF_EX_Latch.getIsNop()));
                 if(op1Reg == rdReg || op2Reg == rdReg) {
                     System.out.println("**OF_EX** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+                    return true;
+                }
+
+                //if div and x31 is being used
+                if((opCode_OFEX == 6 || opCode_OFEX == 7) && (op1Reg == 31 || op2Reg == 31)) {
                     return true;
                 }
             }

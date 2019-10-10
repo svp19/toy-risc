@@ -22,8 +22,9 @@ public class RegisterWrite {
 		if(MA_RW_Latch.isRW_enable() && !MA_RW_Latch.getIsNop())
 		{
 		// Get cu and alu for flags and arithmetic
+			//TODO see why set OpCode bug
 			ControlUnit cu = MA_RW_Latch.getControlUnit();
-
+			cu.setOpCode(MA_RW_Latch.getInstruction());
 			// Todo: Optimization => get ALU Result from EX_MA_Latch
 			int result = MA_RW_Latch.getALUResult(); 
 			if( cu.isLd() ){

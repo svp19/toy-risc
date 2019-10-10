@@ -32,9 +32,19 @@ public class Execute {
 		if(OF_EX_Latch.isEX_enable()) {
 			// Get cu and alu for flags and arithmetic
 			ControlUnit cu = OF_EX_Latch.getControlUnit();
+			cu.setOpCode(OF_EX_Latch.getInstruction());
 			ArithmeticLogicUnit alu = containingProcessor.getALUUnit();
 			alu.setControlUnit(cu);
 			
+			if(cu.isEnd()){
+				System.out.println("GOOOOOOOODBBBBBBBYYYYYYYYYYYEEEEEEEEEEE");
+				//Update EX_MA Latch
+				EX_MA_Latch.setPC(OF_EX_Latch.getPC());
+				EX_MA_Latch.setInstruction(OF_EX_Latch.getInstruction());
+				EX_MA_Latch.setControlUnit(OF_EX_Latch.getControlUnit());
+				EX_MA_Latch.setMA_enable(true);
+				return;
+			}
 			// Set branchPC
 			EX_IF_Latch.setBranchPC(OF_EX_Latch.getBranchTarget());
 

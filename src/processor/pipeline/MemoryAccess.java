@@ -29,6 +29,7 @@ public class MemoryAccess {
 
 		if(EX_MA_Latch.isMA_enable()) {
 			ControlUnit cu = EX_MA_Latch.getControlUnit();
+			cu.setOpCode(EX_MA_Latch.getInstruction());
 
 			if(cu.isLd()) {
 				int ldResult;
@@ -57,7 +58,7 @@ public class MemoryAccess {
 			MA_RW_Latch.setALUResult(EX_MA_Latch.getALUResult());
 			System.out.println("ALUResult: " + Integer.toString(EX_MA_Latch.getALUResult()));
 			System.out.println("CU_OPCODE: " + cu.getOpCode());
-			MA_RW_Latch.setControlUnit(EX_MA_Latch.getControlUnit());
+			MA_RW_Latch.setControlUnit(cu);
 
 			if(EX_MA_Latch.isMA_enable()){ //isBranchTaken is false
 				MA_RW_Latch.setRW_enable(true);
@@ -69,6 +70,7 @@ public class MemoryAccess {
 
 			// debug
 			Scanner input = new Scanner(System.in);
+			System.out.println("Enter an integer: ");
 			int number = input.nextInt();
 
 		}
