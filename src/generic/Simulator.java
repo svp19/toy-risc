@@ -67,6 +67,7 @@ public class Simulator {
 
 			/* 2. Set PC to main */
 			processor.getRegisterFile().setProgramCounter(main);
+			System.out.println("MAIN PC: " + Integer.toString(main));
 			
 			/*3. Set x0, x1, x2*/
 			processor.getRegisterFile().setValue(0, 0);
@@ -91,6 +92,7 @@ public class Simulator {
 	{
 		while(simulationComplete == false)
 		{
+			
 			System.out.println("--------RW--------");
 			processor.getRWUnit().performRW();
 			// Clock.incrementClock();
@@ -100,6 +102,7 @@ public class Simulator {
 			System.out.println("--------EX--------");
 			processor.getEXUnit().performEX();
 			// Clock.incrementClock();
+			
 			System.out.println("--------OF--------");
 			processor.getOFUnit().performOF();
 			// Clock.incrementClock();
@@ -107,6 +110,8 @@ public class Simulator {
 			processor.getIFUnit().performIF();
 			
 			Clock.incrementClock();
+
+			// processor.propagateNops();
 
 			System.out.println("--------  --------");
 			System.out.println("\n\n");

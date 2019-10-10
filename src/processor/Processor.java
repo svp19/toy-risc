@@ -41,6 +41,11 @@ public class Processor {
 	// Stats
 	int numIns;
 	int numCycles;
+
+	// Pipeline Bools
+	Boolean OF_EX_Nop;
+	Boolean EX_MA_Nop;
+	Boolean MA_RW_Nop;
 	
 	public Processor()
 	{
@@ -66,6 +71,34 @@ public class Processor {
 
 		numIns = 0;
 		numCycles = 0;
+
+		OF_EX_Nop = false;
+		EX_MA_Nop = false;
+		MA_RW_Nop = false;	
+	}
+
+	public Boolean getOF_EX_Nop() {
+		return this.OF_EX_Nop;
+	}
+
+	public void setOF_EX_Nop(Boolean OF_EX_Nop) {
+		this.OF_EX_Nop = OF_EX_Nop;
+	}
+
+	public Boolean getEX_MA_Nop() {
+		return this.EX_MA_Nop;
+	}
+
+	public void setEX_MA_Nop(Boolean EX_MA_Nop) {
+		this.EX_MA_Nop = EX_MA_Nop;
+	}
+
+	public Boolean getMA_RW_Nop() {
+		return this.MA_RW_Nop;
+	}
+
+	public void setMA_RW_Nop(Boolean MA_RW_Nop) {
+		this.MA_RW_Nop = MA_RW_Nop;
 	}
 	
 	public void printState(int memoryStartingAddress, int memoryEndingAddress)
@@ -149,6 +182,35 @@ public class Processor {
 
 	public void setNumCycles(int numCycles) {
 		this.numCycles = numCycles;
+	}
+
+	public int getRd(int instruction){
+        
+		ControlUnit cu  = new ControlUnit();
+		cu.setOpCode(instruction);
+		// Get rd
+        String instStr = Integer.toBinaryString(instruction);
+        if( instruction > 0 ){
+            instStr = String.format("%32s", Integer.toBinaryString(instruction)).replace(' ', '0');
+        }
+        String rdStr = instStr.substring(10, 15); // R2I-Type (default)
+        if(cu.isJmp()){ // memoryAccess(this, EXRI-Type
+            rdStr = instStr.substring(5, 10);
+        }
+        if(cu.isR3()){// R3-Type
+            rdStr = instStr.substring(15, 20);
+        }
+        int rd = Integer.parseInt(rdStr, 2);
+        return rd;    
+    }
+
+	public int getOpCode(int instruction){
+		String bin = Integer.toBinaryString(instruction);
+        if( instruction > 0 ){
+            bin = String.format("%32s", Integer.toBinaryString(instruction)).replace(' ', '0');
+        }
+        String opCode = bin.substring(0, 5);
+        return Integer.parseInt(opCode, 2);
 	}
 
 }

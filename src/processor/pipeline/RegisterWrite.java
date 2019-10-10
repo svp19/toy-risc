@@ -17,16 +17,15 @@ public class RegisterWrite {
 	}
 	
 	public void performRW()
-	{
-		if(MA_RW_Latch.isRW_enable())
+	{	
+		
+		if(MA_RW_Latch.isRW_enable() && !MA_RW_Latch.getIsNop())
 		{
-		//TODO
 		// Get cu and alu for flags and arithmetic
-			ControlUnit cu = containingProcessor.getControlUnit();
-			ArithmeticLogicUnit alu = containingProcessor.getALUUnit();
+			ControlUnit cu = MA_RW_Latch.getControlUnit();
 
 			// Todo: Optimization => get ALU Result from EX_MA_Latch
-			int result = alu.getALUResult(); 
+			int result = MA_RW_Latch.getALUResult(); 
 			if( cu.isLd() ){
 				result = MA_RW_Latch.getLdResult();
 			}
@@ -34,8 +33,8 @@ public class RegisterWrite {
 
 		//Get 'rd' from instruction. 
 			//	Can get instruction from IF_OF_Latch instead
-			int currentPC = containingProcessor.getRegisterFile().getProgramCounter();
-			int inst = containingProcessor.getMainMemory().getWord(currentPC-1);// Notice -1
+			int currentPC = MA_RW_Latch.getPC();
+			int inst = MA_RW_Latch.getInstruction();// Notice -1
 			String instStr = Integer.toBinaryString(inst);
             if( inst > 0 ){
                 instStr = String.format("%32s", Integer.toBinaryString(inst)).replace(' ', '0');
@@ -53,7 +52,9 @@ public class RegisterWrite {
 			int rd = Integer.parseInt(rdStr, 2);
 			System.out.println("rd: " + Integer.toString(rd));
 		// If isWb then write back to register
+			System.out.println("CU_OPCODE" + MA_RW_Latch.getControlUnit().getOpCode());
 			if( cu.isWb() ){
+				System.out.println("WRITE!!!!!!!!!!!!!!!");
 				containingProcessor.getRegisterFile().setValue(rd, result);
 			}
 			
@@ -63,14 +64,28 @@ public class RegisterWrite {
 			}
 
 			// // debug
-			// Scanner input = new Scanner(System.in);
-	    	// System.out.print("Enter any integer to continue: ");
-    		// int number = input.nextInt();
+			Scanner input = new Scanner(System.in);
+	    	System.out.print("Enter any integer to continue: ");
+    		int number = input.nextInt();
 				
 		}
 		
 		MA_RW_Latch.setRW_enable(false);
-		IF_EnableLatch.setIF_enable(true);
+
+		// If Nop interlock IF stage, OF stage resumes when no RAW Hazard present
+		containingProcessor.setMA_RW_Nop(MA_RW_Latch.getIsNop());
+		
+		if(MA_RW_Latch.getIsNop()){
+			MA_RW_Latch.setIsNop(false);
+			
+			containingProcessor.getOFUnit().IF_OF_Latch.setOF_enable(true);
+			IF_EnableLatch.setIF_enable(false);
+			System.out.println("RW got NOP");
+		} else {
+			if(containingProcessor.getOFUnit().IF_OF_Latch.getInstruction() != -402653184){
+				IF_EnableLatch.setIF_enable(true);
+			}
+		}
 		
 	}
 

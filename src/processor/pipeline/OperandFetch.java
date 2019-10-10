@@ -19,9 +19,27 @@ public class OperandFetch {
 	
 	public void performOF()
 	{
-		if(IF_OF_Latch.isOF_enable())		
+        
+        if(IF_OF_Latch.isOF_enable())		
 		{
-			//TODO
+            if(checkRAW(IF_OF_Latch.getInstruction())){
+                // Disable IF-OF stages and enable EX stage
+                System.out.println("Found RAW at PC: " + Integer.toString(IF_OF_Latch.getPC()));
+                this.containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
+                OF_EX_Latch.setEX_enable(true);
+                OF_EX_Latch.setIsNop(true);
+                return;
+            } else { // IF Stage should fetch next instruction when data hazard cleared
+                if( IF_OF_Latch.getInstruction() != -402653184 ){//if end don't enable IF Stage
+                    this.containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(true);
+                }
+            }
+            
+			// Set Control Unit
+            // Instruction to Control Unit
+			containingProcessor.getControlUnit().setOpCode(IF_OF_Latch.getInstruction());
+            
+            //TODO
 			int inst = IF_OF_Latch.getInstruction();
 			String bin = Integer.toBinaryString(inst);
             if( inst > 0 ){
@@ -36,7 +54,7 @@ public class OperandFetch {
 				immxStr = "-" + immxStr;
 			}
 			int immx = Integer.parseInt(immxStr, 2);
-            OF_EX_Latch.setImmx(immx);
+            
             
 
             //Calc branchTarget
@@ -53,7 +71,7 @@ public class OperandFetch {
 			}
             int instInt = Integer.parseInt(instStr, 2);
             System.out.println("offSet: " + instStr);
-            int branchTarget = instInt + containingProcessor.getRegisterFile().getProgramCounter() - 1;
+            int branchTarget = instInt + IF_OF_Latch.getPC();
             OF_EX_Latch.setBranchTarget(branchTarget);
             System.out.println("branchTarget: " + instInt);
             
@@ -75,11 +93,18 @@ public class OperandFetch {
             
             System.out.println("op1Reg: " + op1Reg + " ,op1: " + Integer.toString(op1));
             System.out.println("op2Reg: " + op2Reg + " ,op2: " + Integer.toString(op2));
-            // // debug
-			// Scanner input = new Scanner(System.in);
-	    	// System.out.print("Enter an OF integer: ");
-    		// int number = input.nextInt();
 
+            System.out.println("CU_OPCODE: " + containingProcessor.getControlUnit().getOpCode());
+            // debug
+			Scanner input = new Scanner(System.in);
+	    	System.out.print("Enter an OF integer: ");
+    		int number = input.nextInt();
+
+            // Update Latch
+            OF_EX_Latch.setPC(IF_OF_Latch.getPC());
+            OF_EX_Latch.setInstruction(IF_OF_Latch.getInstruction());
+            OF_EX_Latch.setControlUnit(containingProcessor.getControlUnit());
+            OF_EX_Latch.setImmx(immx);
             OF_EX_Latch.setOp1(op1);
             OF_EX_Latch.setOp2(op2);
 
@@ -89,10 +114,65 @@ public class OperandFetch {
 	}
 
 
+    
 
+    public boolean checkRAW(int inst) {
+        // TODO x31 edge case
+        // TODO RS1 FOR LOAD AND RD FOR STORE AS OP1
+        try{
+            // Get op1 and op2
+            String bin = Integer.toBinaryString(inst);
+            if( inst > 0 ){
+                bin = String.format("%32s", Integer.toBinaryString(inst)).replace(' ', '0');
+            }
+            
+            int op1Reg = Integer.parseInt(bin.substring(5,10), 2);
+            int op2Reg = -1;
+            op2Reg = Integer.parseInt(bin.substring(10,15), 2);
+            int opCode = containingProcessor.getOpCode(inst);
+            if(opCode % 2 == 1 && opCode < 22){ //Don't have to check op2 for R2I type
+                op2Reg = -1; 
+            }
 
+            // Get instructions from other latches
+            int OF_EX_inst, EX_MA_inst, MA_RW_inst;
 
+            OF_EX_inst = OF_EX_Latch.getInstruction();
+            EX_MA_inst = containingProcessor.getMAUnit().EX_MA_Latch.getInstruction();
+            MA_RW_inst = containingProcessor.getRWUnit().MA_RW_Latch.getInstruction();
 
+            // Instructions till opcode 22 only write back, hence only they contribute to RAW hazards
+            if(containingProcessor.getOpCode(OF_EX_inst) <= 22 && !containingProcessor.getOF_EX_Nop()) {
+                int rdReg = containingProcessor.getRd(OF_EX_inst);
+                System.out.println("OF_EX_NOP" + Boolean.toString(OF_EX_Latch.getIsNop()));
+                if(op1Reg == rdReg || op2Reg == rdReg) {
+                    System.out.println("**OF_EX** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+                    return true;
+                }
+            }
+
+            if(containingProcessor.getOpCode(EX_MA_inst) <= 22 && !containingProcessor.getEX_MA_Nop()) {
+                int rdReg = containingProcessor.getRd(EX_MA_inst);
+
+                if(op1Reg == rdReg || op2Reg == rdReg) {
+                    System.out.println("**EX_MA** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+                    return true;
+                }
+            }
+
+            if(containingProcessor.getOpCode(MA_RW_inst) <= 22 && !containingProcessor.getMA_RW_Nop()) {
+                int rdReg = containingProcessor.getRd(MA_RW_inst);
+
+                if(op1Reg == rdReg || op2Reg == rdReg) {
+                    System.out.println("**MA_RW** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+                    return true;
+                }
+            }
+        } catch(StringIndexOutOfBoundsException e){
+            return false;
+        }
+        return false;
+    }
 
 
 	// TO BE IN CONTROL UNIT Print 1's and 2's complement of binary number

@@ -1,4 +1,4 @@
-.data
+	.data
 a:
 	4567654
 	.text

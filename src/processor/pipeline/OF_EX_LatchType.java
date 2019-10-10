@@ -1,4 +1,5 @@
 package processor.pipeline;
+import processor.pipeline.ControlUnit;
 
 public class OF_EX_LatchType {
 	
@@ -7,6 +8,54 @@ public class OF_EX_LatchType {
 	int branchTarget;
 	int op1;
 	int op2;
+
+	//new
+	int PC;
+	int instruction;
+	ControlUnit controlUnit;
+	boolean isNop;
+
+	public boolean getIsNop() {
+		return this.isNop;
+	}
+
+	public void setIsNop(boolean isNop) {
+		this.isNop = isNop;
+		if(isNop == true){
+			this.PC = -1;
+			this.instruction = -1;
+			this.immx = -1;
+			this.branchTarget = -1;
+			this.op1 = -1;
+			this.op2 = -1;
+		}
+	}
+
+	public int getPC() {
+		return this.PC;
+	}
+
+	public void setPC(int pc) {
+		this.PC = pc;
+	}
+
+	public int getInstruction() {
+		return this.instruction;
+	}
+
+	public void setInstruction(int instruction) {
+		this.instruction = instruction;
+	}
+
+	public ControlUnit getControlUnit() {
+		return this.controlUnit;
+	}
+
+	public void setControlUnit(ControlUnit controlUnit) {
+		this.controlUnit = controlUnit;
+		System.out.println("CU_OF_EX : " + controlUnit.getOpCode());
+	}
+	
 
 	public int getOp1() {
 		return this.op1;
@@ -27,6 +76,7 @@ public class OF_EX_LatchType {
 	public OF_EX_LatchType()
 	{
 		EX_enable = false;
+		isNop = false;
 	}
 
 	public boolean isEX_enable() {
