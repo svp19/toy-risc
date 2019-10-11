@@ -1,10 +1,14 @@
 package processor.pipeline;
 
+import processor.pipeline.ArithmeticLogicUnit;
+
 public class EX_MA_LatchType {
 	
 	boolean MA_enable;
 	int aluResult;
 	int op2;
+
+	ArithmeticLogicUnit alu;
 	
 	public EX_MA_LatchType()
 	{
@@ -33,6 +37,14 @@ public class EX_MA_LatchType {
 
 	public void setOp2(int op2) {
 		this.op2 = op2;
+	}
+
+	public ArithmeticLogicUnit getAlu() {
+		return this.alu;
+	}
+
+	public void setAlu(ArithmeticLogicUnit alu) {
+		this.alu = alu;
 	}
 
 }
