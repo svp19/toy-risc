@@ -3,6 +3,9 @@ package processor.pipeline;
 import processor.Processor;
 import java.util.Scanner;
 
+import processor.pipeline.ArithmeticLogicUnit;
+import processor.pipeline.ControlUnit;
+
 public class InstructionFetch {
 	
 	Processor containingProcessor;
@@ -39,17 +42,28 @@ public class InstructionFetch {
 			IF_OF_Latch.setInstruction(newInstruction);
 			// System.out.println("PC: " + Integer.toString(currentPC) + " ,inst: " + Integer.toString(newInstruction));
 			
-			containingProcessor.setNumIns(containingProcessor.getNumIns() + 1);
-			containingProcessor.setNumCycles(containingProcessor.getNumCycles() + 1);
+			// TODO stats
+			// containingProcessor.setNumIns(containingProcessor.getNumIns() + 1);
+			// containingProcessor.setNumCycles(containingProcessor.getNumCycles() + 1);
 			
 
 			// Instruction to Control Unit
+			System.out.println(newInstruction);
 			containingProcessor.getControlUnit().setOpCode(newInstruction);
 
 			// Link Control unit to ALU
 			containingProcessor.getALUUnit().setControlUnit(
 				containingProcessor.getControlUnit()
 			);
+
+			// Send CU and ALU to IF_OF latch
+			// TODO delete CU and ALU in the end of RW to save space
+			ControlUnit cu = new ControlUnit();
+			ArithmeticLogicUnit alu = new ArithmeticLogicUnit();
+			cu.setOpCode(newInstruction);
+			alu.setControlUnit(cu);
+
+			IF_OF_Latch.setAlu(alu); // Since alu has it's own cu, no need to pass cu
 			
 			// Check isBranchTaken
 			containingProcessor.getRegisterFile().setProgramCounter(currentPC + 1);	

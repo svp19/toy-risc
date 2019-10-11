@@ -3,6 +3,8 @@ package processor.pipeline;
 import processor.Processor;
 import java.util.Scanner;
 
+import processor.pipeline.ArithmeticLogicUnit;
+import processor.pipeline.ControlUnit;
 
 public class OperandFetch {
 	Processor containingProcessor;
@@ -21,7 +23,11 @@ public class OperandFetch {
 	{
 		if(IF_OF_Latch.isOF_enable())		
 		{
-			//TODO
+            // Get ALU and CU from the IF_OF latch
+            ArithmeticLogicUnit alu = IF_OF_Latch.getAlu();
+            ControlUnit cu = alu.getControlUnit();
+            
+
 			int inst = IF_OF_Latch.getInstruction();
 			String bin = Integer.toBinaryString(inst);
             if( inst > 0 ){
@@ -41,7 +47,7 @@ public class OperandFetch {
 
             //Calc branchTarget
             String instStr = bin.substring(15); 
-            if( containingProcessor.getControlUnit().isJmp()){// CHECK FOR JMP - 22 bits
+            if( cu.isJmp()){// CHECK FOR JMP - 22 bits
                 instStr = bin.substring(10);
             }
             // Error: THIS IS NOT SIMPLERISC
@@ -53,6 +59,7 @@ public class OperandFetch {
 			}
             int instInt = Integer.parseInt(instStr, 2);
             // System.out.println("offSet: " + instStr);
+            // TODO verify
             int branchTarget = instInt + containingProcessor.getRegisterFile().getProgramCounter() - 1;
             OF_EX_Latch.setBranchTarget(branchTarget);
             // System.out.println("branchTarget: " + instInt);
@@ -63,7 +70,7 @@ public class OperandFetch {
             //Calc. op2 
             int op2Reg = -1;
             op2Reg = Integer.parseInt(bin.substring(10,15), 2);
-            if( containingProcessor.getControlUnit().isSt() ){//if Store
+            if( cu.isSt() ){//if Store
                 // switch op1 and op2, need to calc. rd + imm
                 int temp = op1Reg;
                 op1Reg = op2Reg;
@@ -82,6 +89,7 @@ public class OperandFetch {
 
             OF_EX_Latch.setOp1(op1);
             OF_EX_Latch.setOp2(op2);
+            OF_EX_Latch
 
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);

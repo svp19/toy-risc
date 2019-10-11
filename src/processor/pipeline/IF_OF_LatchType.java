@@ -1,9 +1,13 @@
 package processor.pipeline;
+import processor.pipeline.ArithmeticLogicUnit;
 
 public class IF_OF_LatchType {
 	
 	boolean OF_enable;
 	int instruction;
+
+	// Additions after pipelining
+	ArithmeticLogicUnit alu;  // ALU has its own CU
 	
 	public IF_OF_LatchType()
 	{
@@ -24,6 +28,14 @@ public class IF_OF_LatchType {
 
 	public void setInstruction(int instruction) {
 		this.instruction = instruction;
+	}
+
+	public ArithmeticLogicUnit getAlu() {
+		return this.alu;
+	}
+
+	public void setAlu(ArithmeticLogicUnit alu) {
+		this.alu = alu;
 	}
 
 }

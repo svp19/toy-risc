@@ -1,5 +1,7 @@
 package processor.pipeline;
 
+import processor.pipeline.ArithmeticLogicUnit;
+
 public class OF_EX_LatchType {
 	
 	boolean EX_enable;
@@ -7,6 +9,8 @@ public class OF_EX_LatchType {
 	int branchTarget;
 	int op1;
 	int op2;
+
+	ArithmeticLogicUnit alu;
 
 	public int getOp1() {
 		return this.op1;
@@ -55,6 +59,14 @@ public class OF_EX_LatchType {
 
 	public void setBranchTarget(int branchTarget) {
 		this.branchTarget = branchTarget;
+	}
+
+	public ArithmeticLogicUnit getAlu() {
+		return this.alu;
+	}
+
+	public void setAlu(ArithmeticLogicUnit alu) {
+		this.alu = alu;
 	}
 	
 }
