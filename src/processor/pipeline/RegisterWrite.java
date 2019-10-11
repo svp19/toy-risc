@@ -18,6 +18,17 @@ public class RegisterWrite {
 	
 	public void performRW()
 	{	
+		try{ // Special Handling for END instruction
+			//TODO see why set OpCode bug
+			ControlUnit cu = MA_RW_Latch.getControlUnit();
+			cu.setOpCode(MA_RW_Latch.getInstruction());
+			// if instruction being processed is an end instruction, remember to call Simulator.setSimulationComplete(true);
+			if( cu.isEnd() ){
+				containingProcessor.setIsEnd(true);
+			}
+		} catch(Exception e){
+			;
+		}
 		
 		if(MA_RW_Latch.isRW_enable() && !MA_RW_Latch.getIsNop())
 		{
@@ -59,10 +70,7 @@ public class RegisterWrite {
 				containingProcessor.getRegisterFile().setValue(rd, result);
 			}
 			
-			// if instruction being processed is an end instruction, remember to call Simulator.setSimulationComplete(true);
-			if( cu.isEnd() ){
-				containingProcessor.setIsEnd(true);
-			}
+			
 
 			// // debug
 			Scanner input = new Scanner(System.in);

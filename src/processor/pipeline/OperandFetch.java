@@ -19,7 +19,14 @@ public class OperandFetch {
 	
 	public void performOF()
 	{
-        
+        //Special Handling for "end" instruction
+        if(IF_OF_Latch.getInstruction() == -402653184){
+            // Update OF_EX Latch
+            OF_EX_Latch.setPC(IF_OF_Latch.getPC());
+            OF_EX_Latch.setInstruction(IF_OF_Latch.getInstruction());
+            OF_EX_Latch.setControlUnit(containingProcessor.getControlUnit());    
+        }
+
         if(IF_OF_Latch.isOF_enable())		
 		{
             if(checkRAW(IF_OF_Latch.getInstruction())){

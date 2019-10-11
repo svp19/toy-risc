@@ -4,6 +4,6 @@ n:
 	.text
 main:
 	addi %x0, 2, %x6
-    divi %x6, 3, %x6
-	addi %x31, 0, %x9
+    addi %x0, 3, %x3
+	addi %x6, 2, %x6
     end

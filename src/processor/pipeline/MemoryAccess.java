@@ -19,6 +19,14 @@ public class MemoryAccess {
 	{
 		containingProcessor.setEX_MA_Nop(EX_MA_Latch.getIsNop());
 		
+		//Special Handling for "end" instruction
+        if(EX_MA_Latch.getInstruction() == -402653184){
+            // Update OF_EX Latch
+            MA_RW_Latch.setPC(EX_MA_Latch.getPC());
+            MA_RW_Latch.setControlUnit(EX_MA_Latch.getControlUnit());    
+            MA_RW_Latch.setInstruction(EX_MA_Latch.getInstruction());
+        }
+
 		//if isNop
 		if(EX_MA_Latch.getIsNop()){
 

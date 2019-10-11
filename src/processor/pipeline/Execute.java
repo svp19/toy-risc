@@ -28,6 +28,14 @@ public class Execute {
 			EX_MA_Latch.setIsNop(true);
 			System.out.println("EX Got NOP");
 		}
+		
+		//Special Handling for "end" instruction
+        if(OF_EX_Latch.getInstruction() == -402653184){
+            // Update OF_EX Latch
+            EX_MA_Latch.setPC(OF_EX_Latch.getPC());
+            EX_MA_Latch.setControlUnit(OF_EX_Latch.getControlUnit());    
+            EX_MA_Latch.setInstruction(OF_EX_Latch.getInstruction());
+        }
 
 		if(OF_EX_Latch.isEX_enable()) {
 			// Get cu and alu for flags and arithmetic
@@ -37,7 +45,7 @@ public class Execute {
 			alu.setControlUnit(cu);
 			
 			if(cu.isEnd()){
-				System.out.println("GOOOOOOOODBBBBBBBYYYYYYYYYYYEEEEEEEEEEE");
+				System.out.println("The end of the beginning! The middle of the end!");
 				//Update EX_MA Latch
 				EX_MA_Latch.setPC(OF_EX_Latch.getPC());
 				EX_MA_Latch.setInstruction(OF_EX_Latch.getInstruction());
