@@ -163,7 +163,21 @@ public class OperandFetch {
             // Instructions till opcode 22 only write back, hence only they contribute to RAW hazards
             // Data hazard of Div only requires one nop
             int opCode_OFEX = containingProcessor.getOpCode(OF_EX_inst);
-            if(opCode_OFEX <= 22 && !containingProcessor.getOF_EX_Nop()) {
+            // OLD
+            // if(opCode_OFEX <= 22 && !containingProcessor.getOF_EX_Nop()) {
+            //     int rdReg = containingProcessor.getRd(OF_EX_inst);
+            //     if(op1Reg == rdReg || op2Reg == rdReg) {
+            //         System.out.println("**OF_EX** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+            //         return true;
+            //     }
+
+            //     //if div and x31 is being used
+            //     if((opCode_OFEX == 6 || opCode_OFEX == 7) && (op1Reg == 31 || op2Reg == 31)) {
+            //         return true;
+            //     }
+            // }
+
+            if(opCode_OFEX <= 22 && !containingProcessor.getOFUnit().OF_EX_Latch.getIsNop()) {
                 int rdReg = containingProcessor.getRd(OF_EX_inst);
                 if(op1Reg == rdReg || op2Reg == rdReg) {
                     System.out.println("**OF_EX** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
@@ -179,7 +193,17 @@ public class OperandFetch {
             // EX_MA_Hazard
             //TODO Fix condition
             // if(containingProcessor.getOpCode(EX_MA_inst) <= 22 && !containingProcessor.getEX_MA_Nop())            }
-            if(containingProcessor.getOpCode(EX_MA_inst) <= 22 && containingProcessor.getEX_MA_Nop()){
+            // OLD
+            // if(containingProcessor.getOpCode(EX_MA_inst) <= 22 && containingProcessor.getEX_MA_Nop()){
+            //     int rdReg = containingProcessor.getRd(EX_MA_inst);
+            //     System.out.println("CHECKING EX_MA** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+            //     if(op1Reg == rdReg || op2Reg == rdReg) {
+            //         System.out.println("**EX_MA** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+            //         return true;
+            //     }
+            // }
+
+            if(containingProcessor.getOpCode(EX_MA_inst) <= 22 && !containingProcessor.getEXUnit().EX_MA_Latch.getIsNop()){
                 int rdReg = containingProcessor.getRd(EX_MA_inst);
                 System.out.println("CHECKING EX_MA** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
                 if(op1Reg == rdReg || op2Reg == rdReg) {
@@ -188,17 +212,24 @@ public class OperandFetch {
                 }
             }
             
-            System.out.println("Check OpCode and Nope [MA_RW]");
-            System.out.println(containingProcessor.getOpCode(MA_RW_inst));
-            System.out.println(containingProcessor.getMA_RW_Nop());
-            if(containingProcessor.getOpCode(MA_RW_inst) <= 22 && !containingProcessor.getMA_RW_Nop()) {
+            // OLD
+            // if(containingProcessor.getOpCode(MA_RW_inst) <= 22 && !containingProcessor.getMA_RW_Nop()) {
+            //     int rdReg = containingProcessor.getRd(MA_RW_inst);
+            //     System.out.println("CHECKING EX_MA** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+            //     if(op1Reg == rdReg || op2Reg == rdReg) {
+            //         System.out.println("**MA_RW** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+            //         return true;
+            //     }
+            // }
+
+            if(containingProcessor.getOpCode(MA_RW_inst) <= 22 && !containingProcessor.getMAUnit().MA_RW_Latch.getIsNop()) {
                 int rdReg = containingProcessor.getRd(MA_RW_inst);
-                System.out.println("CHECKING EX_MA** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
                 if(op1Reg == rdReg || op2Reg == rdReg) {
                     System.out.println("**MA_RW** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
                     return true;
                 }
             }
+
         } catch(StringIndexOutOfBoundsException e){
             return false;
         }

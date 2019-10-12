@@ -51,10 +51,10 @@ public class MemoryAccess {
 				System.out.println("location: " + Integer.toString(location));
 				System.out.println("data: " + Integer.toString(data));
 				containingProcessor.getMainMemory().setWord(location, data);
-				// debug
-				Scanner input = new Scanner(System.in);
-				System.out.print("Stored! Enter an integer to continue: ");
-				int number = input.nextInt();		
+				// // debug
+				// Scanner input = new Scanner(System.in);
+				// System.out.print("Stored! Enter an integer to continue: ");
+				// int number = input.nextInt();		
 			}
 
 			

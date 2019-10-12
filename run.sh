@@ -1,3 +1,3 @@
 ant
 ant make-jar
-java -Xmx1g -jar jars/simulator.jar src/configuration/config.xml stat.txt test_cases/fibonacci.out
+java -Xmx1g -jar jars/simulator.jar src/configuration/config.xml stat.txt test_cases/prime.out
