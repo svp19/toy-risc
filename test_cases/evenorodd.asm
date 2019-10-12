@@ -1,6 +1,6 @@
 	.data
 n:
-
+	11
 	.text
 main:
 	load %x0, $n, %x3

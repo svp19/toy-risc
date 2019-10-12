@@ -35,6 +35,9 @@ public class OperandFetch {
                 this.containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
                 OF_EX_Latch.setEX_enable(true);
                 OF_EX_Latch.setIsNop(true);
+
+                //Increment OF Stall
+                containingProcessor.setNumOFStalls(containingProcessor.getNumOFStalls() + 1);
                 return;
             } else { // IF Stage should fetch next instruction when data hazard cleared
                 if( IF_OF_Latch.getInstruction() != -402653184 ){//if end don't enable IF Stage

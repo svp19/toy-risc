@@ -127,6 +127,9 @@ public class Simulator {
 		// set statistics
 		stats.setNumberOfInstructions(processor.getNumIns());
 		stats.setNumberOfCycles(processor.getNumCycles());
+		stats.setNumOFStalls(processor.getNumOFStalls());
+		stats.setNumWrongInstruction(processor.getNumBranchTaken() * 2);
+
 	}
 	
 	public static void setSimulationComplete(boolean value)
