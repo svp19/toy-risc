@@ -42,8 +42,7 @@ public class InstructionFetch {
 
 			// System.out.println("PC: " + Integer.toString(currentPC) + " ,inst: " + Integer.toString(newInstruction));
 			containingProcessor.setNumIns(containingProcessor.getNumIns() + 1);
-			containingProcessor.setNumCycles(containingProcessor.getNumCycles() + 1);
-
+			
 			//TODO IN EXECUTE => Link Control unit to ALU
 
 			

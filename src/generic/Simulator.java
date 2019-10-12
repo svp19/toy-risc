@@ -109,8 +109,10 @@ public class Simulator {
 			System.out.println("--------IF--------");
 			processor.getIFUnit().performIF();
 			
-			Clock.incrementClock();
+			//Increment Number of Cycles
+			processor.setNumCycles(processor.getNumCycles() + 1);
 
+			Clock.incrementClock();
 			// Scanner input = new Scanner(System.in);
 			// System.out.println("NEXT CYCLE: ");
 			// int number = input.nextInt();
