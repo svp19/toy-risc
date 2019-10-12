@@ -22,6 +22,10 @@ public class ControlUnit {
         // System.out.println("OPCODE => " + opCode);
     }
     
+    public int getOpCodeInt(){
+        return this.opCodeInt;
+    }
+
     // Memory Instruction Flags 
     public boolean isSt() {
         if( opCode.equals("10111") ){

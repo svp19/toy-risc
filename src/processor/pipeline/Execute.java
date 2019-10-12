@@ -99,10 +99,11 @@ public class Execute {
 			System.out.println("op2: " + Integer.toString(op2));
 			System.out.println("PC: " + Integer.toString(OF_EX_Latch.getPC()));
 			System.out.println("CU_OPCODE: " + OF_EX_Latch.getControlUnit().getOpCode());
-			// debug
-			Scanner input = new Scanner(System.in);
-			System.out.print("Enter an EX integer: ");
-			int number = input.nextInt();
+			
+			// // debug
+			// Scanner input = new Scanner(System.in);
+			// System.out.print("Enter an EX integer: ");
+			// int number = input.nextInt();
 			
 			EX_IF_Latch.setIsBranchTaken(isBrTak);
 			
@@ -122,6 +123,15 @@ public class Execute {
 			} else {
 				EX_MA_Latch.setMA_enable(true);
 			}
+
+			// Control Interlock
+            int opCodeInt = cu.getOpCodeInt();
+            if( opCodeInt > 23 && opCodeInt < 29){ // if control flow instruction
+                // Disable IF Stage
+                containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
+				//Disable OF Stage
+				containingProcessor.getOFUnit().IF_OF_Latch.setOF_enable(false);
+            }
 		}
 	}
 

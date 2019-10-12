@@ -73,9 +73,9 @@ public class RegisterWrite {
 			
 
 			// // debug
-			Scanner input = new Scanner(System.in);
-	    	System.out.print("Enter any integer to continue: ");
-    		int number = input.nextInt();
+			// Scanner input = new Scanner(System.in);
+	    	// System.out.print("Enter any integer to continue: ");
+    		// int number = input.nextInt();
 				
 		}
 		
@@ -87,8 +87,9 @@ public class RegisterWrite {
 		if(MA_RW_Latch.getIsNop()){
 			MA_RW_Latch.setIsNop(false);
 			
-			containingProcessor.getOFUnit().IF_OF_Latch.setOF_enable(true);
-			IF_EnableLatch.setIF_enable(false);
+			// // TODO CHECK ME
+			// containingProcessor.getOFUnit().IF_OF_Latch.setOF_enable(true);
+			// IF_EnableLatch.setIF_enable(false);
 			System.out.println("RW got NOP");
 		} else {
 			if(containingProcessor.getOFUnit().IF_OF_Latch.getInstruction() != -402653184){

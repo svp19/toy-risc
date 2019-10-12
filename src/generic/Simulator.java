@@ -111,9 +111,9 @@ public class Simulator {
 			
 			Clock.incrementClock();
 
-			Scanner input = new Scanner(System.in);
-			System.out.println("NEXT CYCLE: ");
-			int number = input.nextInt();
+			// Scanner input = new Scanner(System.in);
+			// System.out.println("NEXT CYCLE: ");
+			// int number = input.nextInt();
 			// processor.propagateNops();
 
 			System.out.println("--------  --------");

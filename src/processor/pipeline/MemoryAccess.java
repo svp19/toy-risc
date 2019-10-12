@@ -51,7 +51,10 @@ public class MemoryAccess {
 				System.out.println("location: " + Integer.toString(location));
 				System.out.println("data: " + Integer.toString(data));
 				containingProcessor.getMainMemory().setWord(location, data);
-
+				// debug
+				Scanner input = new Scanner(System.in);
+				System.out.print("Stored! Enter an integer to continue: ");
+				int number = input.nextInt();		
 			}
 
 			
@@ -66,6 +69,7 @@ public class MemoryAccess {
 			MA_RW_Latch.setALUResult(EX_MA_Latch.getALUResult());
 			System.out.println("ALUResult: " + Integer.toString(EX_MA_Latch.getALUResult()));
 			System.out.println("CU_OPCODE: " + cu.getOpCode());
+			System.out.println("PC: " + EX_MA_Latch.getPC());
 			MA_RW_Latch.setControlUnit(cu);
 
 			if(EX_MA_Latch.isMA_enable()){ //isBranchTaken is false
@@ -76,10 +80,10 @@ public class MemoryAccess {
 			EX_MA_Latch.setMA_enable(false);
 
 
-			// debug
-			Scanner input = new Scanner(System.in);
-			System.out.println("Enter an integer: ");
-			int number = input.nextInt();
+			// // debug
+			// Scanner input = new Scanner(System.in);
+			// System.out.println("Enter an integer: ");
+			// int number = input.nextInt();
 
 		}
 				

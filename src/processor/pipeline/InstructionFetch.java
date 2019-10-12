@@ -31,6 +31,10 @@ public class InstructionFetch {
 					EX_IF_Latch.getBranchPC()
 				);
 				System.out.println("[BRANCH]");
+
+				//Reset isBranchTaken
+				EX_IF_Latch.setIsBranchTaken(false);
+				
 			}
 			
 			// Fetch Instruction, For every new inst it fetches, numIns++, numCycles++;
@@ -52,11 +56,11 @@ public class InstructionFetch {
 			
 
 			// debug
-			Scanner input = new Scanner(System.in);
+			// Scanner input = new Scanner(System.in);
 			System.out.println("Fetched inst: " + Integer.toString(newInstruction));
 			System.out.println("PC: " + Integer.toString(currentPC));
 	    	System.out.print("Enter an integer: ");
-    		int number = input.nextInt();
+    		// int number = input.nextInt();
 
 			IF_EnableLatch.setIF_enable(false);
 			IF_OF_Latch.setOF_enable(true);

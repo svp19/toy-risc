@@ -12,9 +12,18 @@ public class EX_MA_LatchType {
 	int instruction;
 	ControlUnit controlUnit;
 	boolean isNop;
+	boolean isControlNop;
 
 	public boolean getIsNop() {
 		return this.isNop;
+	}
+
+	public boolean getIsControlNop() {
+		return this.isControlNop;
+	}
+
+	public void setIsControlNop(boolean isControlNop) {
+		this.isControlNop = isControlNop;
 	}
 
 	public void setIsNop(boolean isNop) {
