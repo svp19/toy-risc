@@ -34,6 +34,9 @@ public class InstructionFetch {
 
 				//Reset isBranchTaken
 				EX_IF_Latch.setIsBranchTaken(false);
+
+				//Increment numBranchTaken
+				containingProcessor.setNumBranchTaken(containingProcessor.getNumBranchTaken() + 1);
 				
 			}
 			
@@ -44,7 +47,6 @@ public class InstructionFetch {
 			containingProcessor.setNumIns(containingProcessor.getNumIns() + 1);
 			
 			//TODO IN EXECUTE => Link Control unit to ALU
-
 			
 			// Update Latch
 			IF_OF_Latch.setInstruction(newInstruction);

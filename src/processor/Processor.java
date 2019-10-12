@@ -41,6 +41,8 @@ public class Processor {
 	// Stats
 	int numIns;
 	int numCycles;
+	int numOFStalls;
+	int numBranchTaken;
 
 	// Pipeline Bools
 	Boolean OF_EX_Nop;
@@ -71,6 +73,8 @@ public class Processor {
 
 		numIns = 0;
 		numCycles = 0;
+		numOFStalls = 0;
+		numBranchTaken = 0;
 
 		OF_EX_Nop = false;
 		EX_MA_Nop = false;
@@ -174,6 +178,22 @@ public class Processor {
 
 	public void setNumIns(int numIns) {
 		this.numIns = numIns;
+	}
+
+	public int getNumOFStalls() {
+		return this.numOFStalls;
+	}
+
+	public void setNumOFStalls(int numOFStalls) {
+		this.numOFStalls = numOFStalls;
+	}
+
+	public int getNumBranchTaken() {
+		return this.numBranchTaken;
+	}
+
+	public void setNumBranchTaken(int numBranchTaken) {
+		this.numBranchTaken = numBranchTaken;
 	}
 
 	public int getNumCycles() {
