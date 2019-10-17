@@ -20,7 +20,7 @@ public class OperandFetch {
 	public void performOF()
 	{
         //Special Handling for "end" instruction
-        if(IF_OF_Latch.getInstruction() == -402653184){
+        if(IF_OF_Latch.getInstruction() == -402653184){// if end instruction
             // Update OF_EX Latch
             OF_EX_Latch.setPC(IF_OF_Latch.getPC());
             OF_EX_Latch.setInstruction(IF_OF_Latch.getInstruction());
@@ -39,10 +39,10 @@ public class OperandFetch {
                 //Increment OF Stall
                 containingProcessor.setNumOFStalls(containingProcessor.getNumOFStalls() + 1);
 
-                // debug
-                Scanner input = new Scanner(System.in);
-                System.out.print("Enter an OF integer: ");
-                int number = input.nextInt();
+                // // debug
+                // Scanner input = new Scanner(System.in);
+                // System.out.print("Enter an OF integer: ");
+                // int number = input.nextInt();
 
                 return;
             } else { // IF Stage should fetch next instruction when data hazard cleared
@@ -78,18 +78,16 @@ public class OperandFetch {
             if( containingProcessor.getControlUnit().isJmp()){// CHECK FOR JMP - 22 bits
                 instStr = bin.substring(10);
             }
-            // Error: THIS IS NOT SIMPLERISC
-            // // right shift by 2
-            // instStr += "00";
+            
+            //If negative, format with '-' sign'
             if(instStr.charAt(0) == '1'){
 				instStr = twosComplement(instStr);	
 				instStr = "-" + instStr;
 			}
             int instInt = Integer.parseInt(instStr, 2);
-            System.out.println("offSet: " + instStr);
             int branchTarget = instInt + IF_OF_Latch.getPC();
             OF_EX_Latch.setBranchTarget(branchTarget);
-            System.out.println("branchTarget: " + instInt);
+            
             
             // Calc. op1
             int op1Reg = Integer.parseInt(bin.substring(5,10), 2);
@@ -103,14 +101,16 @@ public class OperandFetch {
                 op1Reg = op2Reg;
                 op2Reg = temp; 
             }
-
+            
             int op1 = containingProcessor.getRegisterFile().getValue(op1Reg);
             int op2 = containingProcessor.getRegisterFile().getValue(op2Reg);
             
+            System.out.println("PC: " + Integer.toString(IF_OF_Latch.getPC()));
             System.out.println("op1Reg: " + op1Reg + " ,op1: " + Integer.toString(op1));
             System.out.println("op2Reg: " + op2Reg + " ,op2: " + Integer.toString(op2));
+            System.out.println("offSet: " + instStr);
+            System.out.println("branchTarget: " + instInt);
             System.out.println("CU_OPCODE: " + containingProcessor.getControlUnit().getOpCode());
-            System.out.println("PC: " + Integer.toString(IF_OF_Latch.getPC()));
             // // debug
 			// Scanner input = new Scanner(System.in);
 	    	// System.out.print("Enter an OF integer: ");
@@ -127,12 +127,12 @@ public class OperandFetch {
 			IF_OF_Latch.setOF_enable(false);
 			OF_EX_Latch.setEX_enable(true);
 
-            // Control Interlock
-            int opCodeInt = containingProcessor.getControlUnit().getOpCodeInt();
-            if( opCodeInt > 23 && opCodeInt < 29){ // if control flow instruction
-                // Disable IF Stage
-                containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
-            }
+            // // No Control Interlock
+            // int opCodeInt = containingProcessor.getControlUnit().getOpCodeInt();
+            // if( opCodeInt > 23 && opCodeInt < 29){ // if control flow instruction
+            //     // Disable IF Stage
+            //     containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
+            // }
 		}
 	}
 
@@ -192,11 +192,11 @@ public class OperandFetch {
                     System.out.println("**OF_EX** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
                     return true;
                 }
-
-                //if div and x31 is being used
-                if((opCode_OFEX == 6 || opCode_OFEX == 7) && (op1Reg == 31 || op2Reg == 31)) {
-                    return true;
-                }
+                
+                // //if div and x31 is being used
+                // if((opCode_OFEX == 6 || opCode_OFEX == 7) && (op1Reg == 31 || op2Reg == 31)) {
+                //     return true;
+                // }
             }
 
             // EX_MA_Hazard

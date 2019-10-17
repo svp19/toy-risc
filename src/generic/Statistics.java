@@ -10,6 +10,13 @@ public class Statistics {
 	static int numOFStalls;
 	static int numWrongInstruction;
 
+	public Statistics() {
+		numberOfInstructions = 0;
+		numberOfCycles = 0;
+		numOFStalls = 0;
+		numWrongInstruction = 0;
+	}
+
 	public static void printStatistics(String statFile)
 	{
 		try

@@ -37,7 +37,7 @@ public class Execute {
             EX_MA_Latch.setInstruction(OF_EX_Latch.getInstruction());
         }
 
-		if(OF_EX_Latch.isEX_enable()) {
+		if(OF_EX_Latch.isEX_enable() && !OF_EX_Latch.getIsNop()) {
 			// Get cu and alu for flags and arithmetic
 			ControlUnit cu = OF_EX_Latch.getControlUnit();
 			cu.setOpCode(OF_EX_Latch.getInstruction());
@@ -104,34 +104,36 @@ public class Execute {
 			// Scanner input = new Scanner(System.in);
 			// System.out.print("Enter an EX integer: ");
 			// int number = input.nextInt();
-			
-			EX_IF_Latch.setIsBranchTaken(isBrTak);
-			
-			// Set op2 in EX_MA Latch in case of store (where op2 is rd, the value to be stored)
-			// Get op2 from OP_EX Latch
-			EX_MA_Latch.setOp2(OF_EX_Latch.getOp2());
 
-			OF_EX_Latch.setEX_enable(false);
-			
+
 			//Update EX_MA Latch
+			// Set op2 in EX_MA Latch in case of store (where op2 is rd, the value to be stored) <= Get op2 from OP_EX Latch
+			EX_MA_Latch.setOp2(OF_EX_Latch.getOp2());
 			EX_MA_Latch.setPC(OF_EX_Latch.getPC());
 			EX_MA_Latch.setInstruction(OF_EX_Latch.getInstruction());
 			EX_MA_Latch.setControlUnit(OF_EX_Latch.getControlUnit());
-			//Disable EX_MA if isBranchTaken -> back to IF_OF
-			if(isBrTak){
-				EX_MA_Latch.setMA_enable(false);	
-			} else {
-				EX_MA_Latch.setMA_enable(true);
-			}
+			
+			//Regular enable/disable update
+			OF_EX_Latch.setEX_enable(false);
+			EX_MA_Latch.setMA_enable(true);
 
-			// Control Interlock
-            int opCodeInt = cu.getOpCodeInt();
-            if( opCodeInt > 23 && opCodeInt < 29){ // if control flow instruction
-                // Disable IF Stage
-                containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
-				//Disable OF Stage
-				containingProcessor.getOFUnit().IF_OF_Latch.setOF_enable(false);
-            }
+			//if isBranchTaken
+			// * Introduce nops in IF_OF & OF_EX
+			// * Predicted Branch Not Taken
+			EX_IF_Latch.setIsBranchTaken(isBrTak);
+			if(isBrTak){
+				containingProcessor.getIFUnit().IF_OF_Latch.setIsNop(true);
+				containingProcessor.getOFUnit().OF_EX_Latch.setIsNop(true);
+			}
+			
+			// // No Control Interlock
+            // int opCodeInt = cu.getOpCodeInt();
+            // if( opCodeInt > 23 && opCodeInt < 29){ // if control flow instruction
+            //     // Disable IF Stage
+            //     containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
+			// 	//Disable OF Stage
+			// 	containingProcessor.getOFUnit().IF_OF_Latch.setOF_enable(false);
+			// }
 		}
 	}
 

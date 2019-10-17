@@ -25,12 +25,12 @@ public class InstructionFetch {
 			// Check isBranchTaken
 			if( EX_IF_Latch.getIsBranchTaken() ){
 
-				// Get PC that was accidentally incrementekd
+				// Update currentPC if branch taken
 				currentPC = EX_IF_Latch.getBranchPC();
 				containingProcessor.getRegisterFile().setProgramCounter(
 					EX_IF_Latch.getBranchPC()
 				);
-				System.out.println("[BRANCH]");
+				System.out.println("[BRANCH] to " + Integer.toString(EX_IF_Latch.getBranchPC()));
 
 				//Reset isBranchTaken
 				EX_IF_Latch.setIsBranchTaken(false);
@@ -67,7 +67,7 @@ public class InstructionFetch {
 			IF_OF_Latch.setOF_enable(true);
 
 			
-			if( newInstruction == -402653184 ){
+			if( newInstruction == -402653184 ){ // end instruction
 				IF_OF_Latch.setOF_enable(false);
 			}
 		}
