@@ -1,6 +1,6 @@
 .data
 n:
-	10
+	3
 	.text
 main:
 	addi %x0, 0, %x3
@@ -19,10 +19,10 @@ for:
 	blt %x8, %x6, loop
 	end
 loop:
-15	add %x3, %x4, %x5
-16	store %x5, 0, %x7	
-17	subi %x7, 1, %x7
-18	addi %x8, 1, %x8
-19	add %x0, %x4, %x3
-20	add %x0, %x5, %x4
-21	jmp for
+	add %x3, %x4, %x5
+	store %x5, 0, %x7	
+	subi %x7, 1, %x7
+	addi %x8, 1, %x8
+	add %x0, %x4, %x3
+	add %x0, %x5, %x4
+	jmp for

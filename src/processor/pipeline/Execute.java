@@ -124,6 +124,7 @@ public class Execute {
 			if(isBrTak){
 				containingProcessor.getIFUnit().IF_OF_Latch.setIsNop(true);
 				containingProcessor.getOFUnit().OF_EX_Latch.setIsNop(true);
+				containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(true);
 			}
 			
 			// // No Control Interlock
