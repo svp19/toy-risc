@@ -1,4 +1,4 @@
-Number of instructions executed = 56
-Number of cycles taken = 93
-Number of OF stalls taken = 33
-Number of Wrong Instructions executed = 14
+Number of instructions executed = 365
+Number of cycles taken = 475
+Number of OF stalls taken = 90
+Number of Wrong Instructions executed = 176

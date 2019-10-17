@@ -113,16 +113,15 @@ public class Simulator {
 			processor.setNumCycles(processor.getNumCycles() + 1);
 
 			Clock.incrementClock();
-			// Scanner input = new Scanner(System.in);
-			// System.out.println("NEXT CYCLE: ");
-			// int number = input.nextInt();
+			Scanner input = new Scanner(System.in);
+			System.out.println("NEXT CYCLE: ");
+			int number = input.nextInt();
 
 			System.out.println("--------  --------");
 			System.out.println("\n\n");
 			setSimulationComplete(processor.getIsEnd());
 		}
 		
-		// TODO
 		// set statistics
 		stats.setNumberOfInstructions(processor.getNumIns());
 		stats.setNumberOfCycles(processor.getNumCycles());
