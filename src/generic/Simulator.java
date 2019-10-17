@@ -25,7 +25,7 @@ public class Simulator {
 	static void loadProgram(String assemblyProgramFile)
 	{
 		/*
-		 * TODO
+		 * DESCRIPTION
 		 * 1. load the program into memory accordisg to the program layout described
 		 *    in the ISA specification
 		 * 2. set PC to the address of the first instruction in the main
@@ -95,17 +95,16 @@ public class Simulator {
 			
 			System.out.println("--------RW--------");
 			processor.getRWUnit().performRW();
-			// Clock.incrementClock();
+
 			System.out.println("--------MA--------");
 			processor.getMAUnit().performMA();
-			// Clock.incrementClock();
+
 			System.out.println("--------EX--------");
 			processor.getEXUnit().performEX();
-			// Clock.incrementClock();
-			
+
 			System.out.println("--------OF--------");
 			processor.getOFUnit().performOF();
-			// Clock.incrementClock();
+
 			System.out.println("--------IF--------");
 			processor.getIFUnit().performIF();
 			

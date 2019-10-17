@@ -19,11 +19,8 @@ public class Execute {
 	
 	public void performEX()
 	{
-		//if isNop
-		containingProcessor.setOF_EX_Nop(OF_EX_Latch.getIsNop());
-		
-		if(OF_EX_Latch.getIsNop()){
-			
+
+		if(OF_EX_Latch.getIsNop()){			
 			OF_EX_Latch.setIsNop(false);
 			EX_MA_Latch.setIsNop(true);
 			System.out.println("EX Got NOP");
@@ -31,21 +28,24 @@ public class Execute {
 		
 		//Special Handling for "end" instruction
         if(OF_EX_Latch.getInstruction() == -402653184){
-            // Update OF_EX Latch
+
+            // Update EX_MA Latch
             EX_MA_Latch.setPC(OF_EX_Latch.getPC());
             EX_MA_Latch.setControlUnit(OF_EX_Latch.getControlUnit());    
             EX_MA_Latch.setInstruction(OF_EX_Latch.getInstruction());
         }
 
-		if(OF_EX_Latch.isEX_enable() && !OF_EX_Latch.getIsNop()) {
+		if(OF_EX_Latch.isEX_enable() && !OF_EX_Latch.getIsNop()) {  // Check if there's a NOP
 			// Get cu and alu for flags and arithmetic
 			ControlUnit cu = OF_EX_Latch.getControlUnit();
 			cu.setOpCode(OF_EX_Latch.getInstruction());
 			ArithmeticLogicUnit alu = containingProcessor.getALUUnit();
 			alu.setControlUnit(cu);
 			
+			// If end, just update latch and return
 			if(cu.isEnd()){
 				System.out.println("The end of the beginning! The middle of the end!");
+
 				//Update EX_MA Latch
 				EX_MA_Latch.setPC(OF_EX_Latch.getPC());
 				EX_MA_Latch.setInstruction(OF_EX_Latch.getInstruction());
@@ -53,6 +53,7 @@ public class Execute {
 				EX_MA_Latch.setMA_enable(true);
 				return;
 			}
+
 			// Set branchPC
 			EX_IF_Latch.setBranchPC(OF_EX_Latch.getBranchTarget());
 
@@ -95,12 +96,13 @@ public class Execute {
 				isBrTak = true;
 			}
 			
+			// Printing to debug
 			System.out.println("op1: " + Integer.toString(op1));
 			System.out.println("op2: " + Integer.toString(op2));
 			System.out.println("PC: " + Integer.toString(OF_EX_Latch.getPC()));
 			System.out.println("CU_OPCODE: " + OF_EX_Latch.getControlUnit().getOpCode());
 			
-			// // debug
+		// debug
 			// Scanner input = new Scanner(System.in);
 			// System.out.print("Enter an EX integer: ");
 			// int number = input.nextInt();
@@ -118,7 +120,7 @@ public class Execute {
 			EX_MA_Latch.setMA_enable(true);
 
 			//if isBranchTaken
-			// * Introduce nops in IF_OF & OF_EX
+			// * Introduce nops in IF_OF & OF_EX and enable IF
 			// * Predicted Branch Not Taken
 			EX_IF_Latch.setIsBranchTaken(isBrTak);
 			if(isBrTak){
@@ -126,16 +128,6 @@ public class Execute {
 				containingProcessor.getOFUnit().OF_EX_Latch.setIsNop(true);
 				containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(true);
 			}
-			
-			// // No Control Interlock
-            // int opCodeInt = cu.getOpCodeInt();
-            // if( opCodeInt > 23 && opCodeInt < 29){ // if control flow instruction
-            //     // Disable IF Stage
-            //     containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
-			// 	//Disable OF Stage
-			// 	containingProcessor.getOFUnit().IF_OF_Latch.setOF_enable(false);
-			// }
 		}
 	}
-
 }

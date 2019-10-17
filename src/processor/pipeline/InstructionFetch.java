@@ -40,13 +40,9 @@ public class InstructionFetch {
 				
 			}
 			
-			// Fetch Instruction, For every new inst it fetches, numIns++, numCycles++;
+			// Fetch Instruction, For every new inst it fetches, numIns++;
 			int newInstruction = containingProcessor.getMainMemory().getWord(currentPC);
-
-			// System.out.println("PC: " + Integer.toString(currentPC) + " ,inst: " + Integer.toString(newInstruction));
 			containingProcessor.setNumIns(containingProcessor.getNumIns() + 1);
-			
-			//TODO IN EXECUTE => Link Control unit to ALU
 			
 			// Update Latch
 			IF_OF_Latch.setInstruction(newInstruction);
@@ -55,19 +51,19 @@ public class InstructionFetch {
 			// Check isBranchTaken
 			containingProcessor.getRegisterFile().setProgramCounter(currentPC + 1);	
 			
-
-			// debug
+		// debug
 			// Scanner input = new Scanner(System.in);
-			System.out.println("Fetched inst: " + Integer.toString(newInstruction));
-			System.out.println("PC: " + Integer.toString(currentPC));
-	    	System.out.print("Enter an integer: ");
+			// System.out.println("Fetched inst: " + Integer.toString(newInstruction));
+			// System.out.println("PC: " + Integer.toString(currentPC));
+	    	// System.out.print("Enter an integer: ");
     		// int number = input.nextInt();
 
+			// Update the latches
 			IF_EnableLatch.setIF_enable(false);
 			IF_OF_Latch.setOF_enable(true);
 
-			
-			if( newInstruction == -402653184 ){ // end instruction
+			// Special case for end
+			if( newInstruction == -402653184 ){
 				IF_OF_Latch.setOF_enable(false);
 			}
 		}
