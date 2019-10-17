@@ -17,24 +17,23 @@ public class MemoryAccess {
 	
 	public void performMA()
 	{
-		containingProcessor.setEX_MA_Nop(EX_MA_Latch.getIsNop());
-		
 		//Special Handling for "end" instruction
         if(EX_MA_Latch.getInstruction() == -402653184){
-            // Update OF_EX Latch
+
+            // Update MA_RW Latch
             MA_RW_Latch.setPC(EX_MA_Latch.getPC());
             MA_RW_Latch.setControlUnit(EX_MA_Latch.getControlUnit());    
             MA_RW_Latch.setInstruction(EX_MA_Latch.getInstruction());
         }
 
-		//if isNop
+		// if isNop
 		if(EX_MA_Latch.getIsNop()){
-
 			EX_MA_Latch.setIsNop(false);
 			MA_RW_Latch.setIsNop(true);
 			System.out.println("MA got NOP");
 		}
 
+		// Start main part of MA
 		if(EX_MA_Latch.isMA_enable()) {
 			ControlUnit cu = EX_MA_Latch.getControlUnit();
 			cu.setOpCode(EX_MA_Latch.getInstruction());
@@ -51,14 +50,15 @@ public class MemoryAccess {
 				System.out.println("location: " + Integer.toString(location));
 				System.out.println("data: " + Integer.toString(data));
 				containingProcessor.getMainMemory().setWord(location, data);
-				// // debug
+
+			// debug
 				// Scanner input = new Scanner(System.in);
 				// System.out.print("Stored! Enter an integer to continue: ");
 				// int number = input.nextInt();		
 			}
 
 			
-			// // debug
+		// debug
 			// Scanner input = new Scanner(System.in);
 			// System.out.print("Enter an MA integer: ");
 			// int number = input.nextInt();
@@ -67,20 +67,19 @@ public class MemoryAccess {
 			MA_RW_Latch.setPC(EX_MA_Latch.getPC());
 			MA_RW_Latch.setInstruction(EX_MA_Latch.getInstruction());
 			MA_RW_Latch.setALUResult(EX_MA_Latch.getALUResult());
+
+			// Printing debug
 			System.out.println("ALUResult: " + Integer.toString(EX_MA_Latch.getALUResult()));
 			System.out.println("CU_OPCODE: " + cu.getOpCode());
 			System.out.println("PC: " + EX_MA_Latch.getPC());
+
+			// Update latches
 			MA_RW_Latch.setControlUnit(cu);
-
-			if(EX_MA_Latch.isMA_enable()){ //isBranchTaken is false
-				MA_RW_Latch.setRW_enable(true);
-			} else {//isBranchTaken is true
-				MA_RW_Latch.setRW_enable(false);
-			}
+			
 			EX_MA_Latch.setMA_enable(false);
+			MA_RW_Latch.setRW_enable(true);
 
-
-			// // debug
+		// debug
 			// Scanner input = new Scanner(System.in);
 			// System.out.println("Enter an integer: ");
 			// int number = input.nextInt();
