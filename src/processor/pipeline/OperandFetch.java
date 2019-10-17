@@ -38,6 +38,12 @@ public class OperandFetch {
 
                 //Increment OF Stall
                 containingProcessor.setNumOFStalls(containingProcessor.getNumOFStalls() + 1);
+
+                // debug
+                Scanner input = new Scanner(System.in);
+                System.out.print("Enter an OF integer: ");
+                int number = input.nextInt();
+
                 return;
             } else { // IF Stage should fetch next instruction when data hazard cleared
                 if( IF_OF_Latch.getInstruction() != -402653184 ){//if end don't enable IF Stage

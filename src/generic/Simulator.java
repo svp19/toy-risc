@@ -116,7 +116,6 @@ public class Simulator {
 			// Scanner input = new Scanner(System.in);
 			// System.out.println("NEXT CYCLE: ");
 			// int number = input.nextInt();
-			// processor.propagateNops();
 
 			System.out.println("--------  --------");
 			System.out.println("\n\n");

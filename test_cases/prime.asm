@@ -19,6 +19,6 @@ prime:
 	addi %x10, 1, %x10
 	end
 notprime:
-		sub %x10, %x10, %x10
-		subi %x10, 1, %x10
-		end
+	sub %x10, %x10, %x10
+	subi %x10, 1, %x10
+	end

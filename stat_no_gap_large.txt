@@ -1,0 +1,4 @@
+Number of instructions executed = 2001
+Number of cycles taken = 4005
+Number of OF stalls taken = 2000
+Number of Wrong Instructions executed = 0
