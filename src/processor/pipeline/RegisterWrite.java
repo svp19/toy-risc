@@ -22,7 +22,8 @@ public class RegisterWrite {
 			//TODO see why set OpCode bug
 			ControlUnit cu = MA_RW_Latch.getControlUnit();
 			cu.setOpCode(MA_RW_Latch.getInstruction());
-			// if instruction being processed is an end instruction, remember to call Simulator.setSimulationComplete(true);
+			// if instruction being processed is an end instruction, 
+			//  remember to call Simulator.setSimulationComplete(true);
 			if( cu.isEnd() ){
 				containingProcessor.setIsEnd(true);
 			}
@@ -70,9 +71,7 @@ public class RegisterWrite {
 				containingProcessor.getRegisterFile().setValue(rd, result);
 			}
 			
-			
-
-			// // debug
+		// debug
 			// Scanner input = new Scanner(System.in);
 	    	// System.out.print("Enter any integer to continue: ");
     		// int number = input.nextInt();
@@ -86,13 +85,9 @@ public class RegisterWrite {
 		
 		if(MA_RW_Latch.getIsNop()){
 			MA_RW_Latch.setIsNop(false);
-			
-			// // TODO CHECK ME
-			// containingProcessor.getOFUnit().IF_OF_Latch.setOF_enable(true);
-			// IF_EnableLatch.setIF_enable(false);
 			System.out.println("RW got NOP");
 		} else {
-			if(containingProcessor.getOFUnit().IF_OF_Latch.getInstruction() != -402653184){
+			if(containingProcessor.getOFUnit().IF_OF_Latch.getInstruction() != -402653184){ // if note end, then enable IF stage
 				IF_EnableLatch.setIF_enable(true);
 			}
 		}
