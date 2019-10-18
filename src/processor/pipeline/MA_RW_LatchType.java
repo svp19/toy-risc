@@ -62,7 +62,6 @@ public class MA_RW_LatchType {
 
 	public void setControlUnit(ControlUnit controlUnit) {
 		this.controlUnit = controlUnit;
-		System.out.println("CU_MA_RW : " + controlUnit.getOpCode());
 	}
 	
 	public int getLdResult() {
