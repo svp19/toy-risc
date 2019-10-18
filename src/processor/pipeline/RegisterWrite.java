@@ -18,6 +18,11 @@ public class RegisterWrite {
 	
 	public void performRW()
 	{	
+		// Print Debug
+		if(containingProcessor.getDebugMode().charAt(0) != '0') {
+			System.out.println("--------RW--------");
+		}
+
 		// Special Handling for END instruction
 		try{
 			//TODO see why set OpCode bug

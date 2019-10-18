@@ -1,5 +1,4 @@
 package processor.pipeline;
-
 import processor.Processor;
 import java.util.Scanner;
 
@@ -19,6 +18,11 @@ public class OperandFetch {
 	
 	public void performOF()
 	{
+        // Print Debug
+		if(containingProcessor.getDebugMode().charAt(0) != '0') {
+			System.out.println("--------OF--------");
+        }
+        
         //Special Handling for "end" instruction
         if(IF_OF_Latch.getInstruction() == -402653184){  // if end instruction
 

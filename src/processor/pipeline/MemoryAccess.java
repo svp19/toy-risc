@@ -17,6 +17,11 @@ public class MemoryAccess {
 	
 	public void performMA()
 	{
+		// Print Debug
+		if(containingProcessor.getDebugMode().charAt(0) != '0') {
+			System.out.println("--------MA--------");
+		}
+
 		//Special Handling for "end" instruction
         if(EX_MA_Latch.getInstruction() == -402653184){
 

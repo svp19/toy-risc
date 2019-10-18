@@ -19,6 +19,10 @@ public class Execute {
 	
 	public void performEX()
 	{
+		// Print Debug
+		if(containingProcessor.getDebugMode().charAt(0) != '0') {
+			System.out.println("--------EX--------");
+		}
 
 		if(OF_EX_Latch.getIsNop()){			
 			OF_EX_Latch.setIsNop(false);

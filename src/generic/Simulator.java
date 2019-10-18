@@ -6,13 +6,19 @@ import processor.Clock;
 import processor.Processor;
 import processor.memorysystem.MainMemory;
 import generic.Statistics;
+import generic.EventQueue;
 
 public class Simulator {
 		
 	static Processor processor;
 	static boolean simulationComplete;
+	static EventQueue eventQueue;
 	static Statistics stats;
 	static String debug;
+
+	public Simulator(){
+		eventQueue = new EventQueue();
+	}
 
 	public static void setDebugMode(String debug) {
 		// Bring to form 011101 (example)
@@ -23,9 +29,12 @@ public class Simulator {
 	{
 		Simulator.processor = p;
 		loadProgram(assemblyProgramFile);
-		
 		simulationComplete = false;
 		stats = new Statistics();
+	}
+
+	public static EventQueue getEventQueue(){
+		return eventQueue;
 	}
 	
 	static void loadProgram(String assemblyProgramFile)
@@ -103,47 +112,32 @@ public class Simulator {
 	{
 		while(simulationComplete == false)
 		{
-			if(debug.charAt(0) != '0') {
-				System.out.println("--------RW--------");
-			}
+			
 			processor.getRWUnit().performRW();
-
-			if(debug.charAt(0) != '0') {
-				System.out.println("--------MA--------");
-			}
 			processor.getMAUnit().performMA();
-
-			if(debug.charAt(0) != '0') {
-				System.out.println("--------EX--------");
-			}
 			processor.getEXUnit().performEX();
-
-			if(debug.charAt(0) != '0') {
-				System.out.println("--------OF--------");
-			}
+			eventQueue.processEvents();
 			processor.getOFUnit().performOF();
-
-			if(debug.charAt(0) != '0') {
-				System.out.println("--------IF--------");
-			}
 			processor.getIFUnit().performIF();
+			Clock.incrementClock();
 			
 			//Increment Number of Cycles
 			processor.setNumCycles(processor.getNumCycles() + 1);
 
-			Clock.incrementClock();
-
-			// debug
+			// debug input
 			if(debug.charAt(0) == '2') {
 				Scanner input = new Scanner(System.in);
 				System.out.println("NEXT CYCLE: ");
 				int number = input.nextInt();
 			}
 
+			// debug print
 			if(debug.charAt(0) != '0') {
 				System.out.println("--------  --------");
 				System.out.println("\n\n");
 			}
+
+			// set end state for processor
 			setSimulationComplete(processor.getIsEnd());
 		}
 		

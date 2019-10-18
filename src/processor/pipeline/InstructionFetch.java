@@ -18,7 +18,12 @@ public class InstructionFetch {
 		this.EX_IF_Latch = eX_IF_Latch;
 	}
 	public void performIF()
-	{
+	{	
+		// Print Debug
+		if(containingProcessor.getDebugMode().charAt(0) != '0') {
+			System.out.println("--------IF--------");
+		}
+
 		if(IF_EnableLatch.isIF_enable())
 		{
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter();
