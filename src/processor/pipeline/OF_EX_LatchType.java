@@ -53,7 +53,6 @@ public class OF_EX_LatchType {
 
 	public void setControlUnit(ControlUnit controlUnit) {
 		this.controlUnit = controlUnit;
-		System.out.println("CU_OF_EX : " + controlUnit.getOpCode());
 	}
 	
 

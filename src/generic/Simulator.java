@@ -12,6 +12,12 @@ public class Simulator {
 	static Processor processor;
 	static boolean simulationComplete;
 	static Statistics stats;
+	static String debug;
+
+	public static void setDebugMode(String debug) {
+		// Bring to form 011101 (example)
+		Simulator.debug = debug;
+	}
 	
 	public static void setupSimulation(String assemblyProgramFile, Processor p)
 	{
@@ -47,7 +53,6 @@ public class Simulator {
 			
 			// Read PC
 			int main = dis.readInt();
-			System.out.println(main);
 
 			// Read Int from file
 			int read4Bytes = 0, i = 0;
@@ -55,7 +60,11 @@ public class Simulator {
 			{
 				read4Bytes = dis.readInt();
 				mainMemory.setWord(i, read4Bytes);
-				System.out.println(read4Bytes);
+
+				if(debug.charAt(0) != '0') {
+					System.out.println(read4Bytes);
+				}
+
 				i ++ ;
 			}
 			dis.close();
@@ -63,11 +72,11 @@ public class Simulator {
 			// Set updated memory for processor
 			processor.setMainMemory(mainMemory);
 
-			System.out.println("Nearly Done");
-
 			/* 2. Set PC to main */
 			processor.getRegisterFile().setProgramCounter(main);
-			System.out.println("MAIN PC: " + Integer.toString(main));
+			if(debug.charAt(0) != '0') {
+				System.out.println("MAIN PC: " + Integer.toString(main));
+			}
 			
 			/*3. Set x0, x1, x2*/
 			processor.getRegisterFile().setValue(0, 0);
@@ -77,6 +86,8 @@ public class Simulator {
 			// Debugging - Print Memory
 			System.out.println(mainMemory.getContentsAsString(0, 30));
 
+			// Set Debug config for processor
+			processor.setDebugMode(debug);
 		}
 		catch(FileNotFoundException fe)
 		{ 
@@ -92,20 +103,29 @@ public class Simulator {
 	{
 		while(simulationComplete == false)
 		{
-			
-			System.out.println("--------RW--------");
+			if(debug.charAt(0) != '0') {
+				System.out.println("--------RW--------");
+			}
 			processor.getRWUnit().performRW();
 
-			System.out.println("--------MA--------");
+			if(debug.charAt(0) != '0') {
+				System.out.println("--------MA--------");
+			}
 			processor.getMAUnit().performMA();
 
-			System.out.println("--------EX--------");
+			if(debug.charAt(0) != '0') {
+				System.out.println("--------EX--------");
+			}
 			processor.getEXUnit().performEX();
 
-			System.out.println("--------OF--------");
+			if(debug.charAt(0) != '0') {
+				System.out.println("--------OF--------");
+			}
 			processor.getOFUnit().performOF();
 
-			System.out.println("--------IF--------");
+			if(debug.charAt(0) != '0') {
+				System.out.println("--------IF--------");
+			}
 			processor.getIFUnit().performIF();
 			
 			//Increment Number of Cycles
@@ -113,13 +133,17 @@ public class Simulator {
 
 			Clock.incrementClock();
 
-			// // debug
-			// Scanner input = new Scanner(System.in);
-			// System.out.println("NEXT CYCLE: ");
-			// int number = input.nextInt();
+			// debug
+			if(debug.charAt(0) == '2') {
+				Scanner input = new Scanner(System.in);
+				System.out.println("NEXT CYCLE: ");
+				int number = input.nextInt();
+			}
 
-			System.out.println("--------  --------");
-			System.out.println("\n\n");
+			if(debug.charAt(0) != '0') {
+				System.out.println("--------  --------");
+				System.out.println("\n\n");
+			}
 			setSimulationComplete(processor.getIsEnd());
 		}
 		

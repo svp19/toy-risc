@@ -33,7 +33,10 @@ public class OperandFetch {
             if(checkRAW(IF_OF_Latch.getInstruction())){
 
                 // Disable IF-OF stages and enable EX stage
-                System.out.println("Found RAW at PC: " + Integer.toString(IF_OF_Latch.getPC()));
+                if(containingProcessor.getDebugMode().charAt(2) != '0') {
+                    System.out.println("Found RAW at PC: " + Integer.toString(IF_OF_Latch.getPC()));
+                }
+
                 this.containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
                 OF_EX_Latch.setEX_enable(true);
                 OF_EX_Latch.setIsNop(true);
@@ -63,7 +66,9 @@ public class OperandFetch {
             if( inst > 0 ){
                 bin = String.format("%32s", Integer.toBinaryString(inst)).replace(' ', '0');
             }
-            System.out.println("Binary Instruction: " + bin);
+            if(containingProcessor.getDebugMode().charAt(2) != '0') {
+                System.out.println("Binary Instruction: " + bin);
+            }
 
 			//Calc immx
 			String immxStr = bin.substring(15);
@@ -106,18 +111,21 @@ public class OperandFetch {
             int op1 = containingProcessor.getRegisterFile().getValue(op1Reg);
             int op2 = containingProcessor.getRegisterFile().getValue(op2Reg);
             
-            // ******* Printing to debug
-            System.out.println("PC: " + Integer.toString(IF_OF_Latch.getPC()));
-            System.out.println("op1Reg: " + op1Reg + " ,op1: " + Integer.toString(op1));
-            System.out.println("op2Reg: " + op2Reg + " ,op2: " + Integer.toString(op2));
-            System.out.println("offSet: " + instStr);
-            System.out.println("branchTarget: " + instInt);
-            System.out.println("CU_OPCODE: " + containingProcessor.getControlUnit().getOpCode());
-
-        // debug
-			// Scanner input = new Scanner(System.in);
-	    	// System.out.print("Enter an OF integer: ");
-    		// int number = input.nextInt();
+            // Printing to debug
+            if(containingProcessor.getDebugMode().charAt(2) != '0') {
+                System.out.println("PC: " + Integer.toString(IF_OF_Latch.getPC()));
+                System.out.println("op1Reg: " + op1Reg + " ,op1: " + Integer.toString(op1));
+                System.out.println("op2Reg: " + op2Reg + " ,op2: " + Integer.toString(op2));
+                System.out.println("offSet: " + instStr);
+                System.out.println("branchTarget: " + instInt);
+                System.out.println("CU_OPCODE: " + containingProcessor.getControlUnit().getOpCode());
+            }
+            
+            if(containingProcessor.getDebugMode().charAt(2) == '2') {
+                Scanner input = new Scanner(System.in);
+                System.out.print("Enter an OF integer: ");
+                int number = input.nextInt();
+            }
 
             // Update Latch
             OF_EX_Latch.setPC(IF_OF_Latch.getPC());
@@ -169,7 +177,11 @@ public class OperandFetch {
             if(opCode_OFEX <= 22 && !containingProcessor.getOFUnit().OF_EX_Latch.getIsNop()) {
                 int rdReg = containingProcessor.getRd(OF_EX_inst);
                 if(op1Reg == rdReg || op2Reg == rdReg) {
-                    System.out.println("**OF_EX** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+
+                    // Check if debug printing is on
+                    if(containingProcessor.getDebugMode().charAt(2) != '0') {
+                        System.out.println("**OF_EX** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+                    }
                     return true;
                 }
             }
@@ -177,9 +189,12 @@ public class OperandFetch {
             // Checking for EX_MA hazard
             if(containingProcessor.getOpCode(EX_MA_inst) <= 22 && !containingProcessor.getEXUnit().EX_MA_Latch.getIsNop()){
                 int rdReg = containingProcessor.getRd(EX_MA_inst);
-                System.out.println("CHECKING EX_MA** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
                 if(op1Reg == rdReg || op2Reg == rdReg) {
-                    System.out.println("**EX_MA** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+
+                    // Check if debug printing is on
+                    if(containingProcessor.getDebugMode().charAt(2) != '0') {
+                        System.out.println("**EX_MA** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+                    }
                     return true;
                 }
             }
@@ -188,7 +203,11 @@ public class OperandFetch {
             if(containingProcessor.getOpCode(MA_RW_inst) <= 22 && !containingProcessor.getMAUnit().MA_RW_Latch.getIsNop()) {
                 int rdReg = containingProcessor.getRd(MA_RW_inst);
                 if(op1Reg == rdReg || op2Reg == rdReg) {
-                    System.out.println("**MA_RW** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+
+                    // Check if debug printing is on
+                    if(containingProcessor.getDebugMode().charAt(2) != '0') {
+                        System.out.println("**MA_RW** op1Reg: " + Integer.toString(op1Reg) + "\t" + "op2Reg: " + Integer.toString(op2Reg) + "\t" +"rdReg: " + Integer.toString(rdReg));
+                    }
                     return true;
                 }
             }

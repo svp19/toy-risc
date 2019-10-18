@@ -12,15 +12,16 @@ import generic.Simulator;
 public class Main {
 
 	public static void main(String[] args) {
-		if(args.length != 3)
+		if(args.length != 4)
 		{
-			Misc.printErrorAndExit("usage: java -jar <path-to-jar-file> <path-to-config-file> <path-to-stat-file> <path-to-object-file>\n");
+			Misc.printErrorAndExit("usage: java -jar <path-to-jar-file> <path-to-config-file> <path-to-stat-file> <path-to-object-file> <print-debug>\n");
 		}
 		
 		Configuration.parseConfiguratioFile(args[0]);
 		
 		Processor processor = new Processor();
 		
+		Simulator.setDebugMode(args[3]);
 		Simulator.setupSimulation(args[2], processor);
 		Simulator.simulate();
 		
