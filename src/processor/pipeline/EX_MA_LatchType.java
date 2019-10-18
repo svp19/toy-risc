@@ -65,7 +65,6 @@ public class EX_MA_LatchType {
 
 	public void setControlUnit(ControlUnit controlUnit) {
 		this.controlUnit = controlUnit;
-		System.out.println("CU_EX_MA : " + controlUnit.getOpCode());
 	}
 
 	public boolean isMA_enable() {

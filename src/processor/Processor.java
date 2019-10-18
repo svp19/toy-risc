@@ -48,6 +48,9 @@ public class Processor {
 	Boolean OF_EX_Nop;
 	Boolean EX_MA_Nop;
 	Boolean MA_RW_Nop;
+
+	// Debug Config
+	String debug;
 	
 	public Processor()
 	{
@@ -76,33 +79,15 @@ public class Processor {
 		numOFStalls = 0;
 		numBranchTaken = 0;
 
-		OF_EX_Nop = false;
-		EX_MA_Nop = false;
-		MA_RW_Nop = false;	
+		debug = "000000";
 	}
 
-	public Boolean getOF_EX_Nop() {
-		return this.OF_EX_Nop;
+	public void setDebugMode(String debug) {
+		this.debug = debug;
 	}
 
-	public void setOF_EX_Nop(Boolean OF_EX_Nop) {
-		this.OF_EX_Nop = OF_EX_Nop;
-	}
-
-	public Boolean getEX_MA_Nop() {
-		return this.EX_MA_Nop;
-	}
-
-	public void setEX_MA_Nop(Boolean EX_MA_Nop) {
-		this.EX_MA_Nop = EX_MA_Nop;
-	}
-
-	public Boolean getMA_RW_Nop() {
-		return this.MA_RW_Nop;
-	}
-
-	public void setMA_RW_Nop(Boolean MA_RW_Nop) {
-		this.MA_RW_Nop = MA_RW_Nop;
+	public String getDebugMode() {
+		return this.debug;
 	}
 	
 	public void printState(int memoryStartingAddress, int memoryEndingAddress)
@@ -111,7 +96,7 @@ public class Processor {
 		
 		System.out.println(mainMemory.getContentsAsString(memoryStartingAddress, memoryEndingAddress));		
 	}
-
+	
 	public RegisterFile getRegisterFile() {
 		return registerFile;
 	}

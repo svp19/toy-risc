@@ -30,7 +30,10 @@ public class InstructionFetch {
 				containingProcessor.getRegisterFile().setProgramCounter(
 					EX_IF_Latch.getBranchPC()
 				);
-				System.out.println("[BRANCH] to " + Integer.toString(EX_IF_Latch.getBranchPC()));
+
+				if(containingProcessor.getDebugMode().charAt(1) != '0') {
+					System.out.println("[BRANCH] to " + Integer.toString(EX_IF_Latch.getBranchPC()));
+				}
 
 				//Reset isBranchTaken
 				EX_IF_Latch.setIsBranchTaken(false);
@@ -51,13 +54,18 @@ public class InstructionFetch {
 			// Check isBranchTaken
 			containingProcessor.getRegisterFile().setProgramCounter(currentPC + 1);	
 			
-		// debug
-			// Scanner input = new Scanner(System.in);
-			// System.out.println("Fetched inst: " + Integer.toString(newInstruction));
-			// System.out.println("PC: " + Integer.toString(currentPC));
-	    	// System.out.print("Enter an integer: ");
-    		// int number = input.nextInt();
-
+			// debug
+			if(containingProcessor.getDebugMode().charAt(1) != '0') {
+				System.out.println("Fetched inst: " + Integer.toString(newInstruction));
+				System.out.println("PC: " + Integer.toString(currentPC));
+			}
+			
+			if(containingProcessor.getDebugMode().charAt(1) == '2') {
+				Scanner input = new Scanner(System.in);
+				System.out.print("Enter an integer: ");
+				int number = input.nextInt();
+			}
+			
 			// Update the latches
 			IF_EnableLatch.setIF_enable(false);
 			IF_OF_Latch.setOF_enable(true);

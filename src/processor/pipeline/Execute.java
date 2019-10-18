@@ -23,7 +23,10 @@ public class Execute {
 		if(OF_EX_Latch.getIsNop()){			
 			OF_EX_Latch.setIsNop(false);
 			EX_MA_Latch.setIsNop(true);
-			System.out.println("EX Got NOP");
+
+			if(containingProcessor.getDebugMode().charAt(3) != '0') {
+				System.out.println("EX Got NOP");
+            }
 		}
 		
 		//Special Handling for "end" instruction
@@ -44,7 +47,9 @@ public class Execute {
 			
 			// If end, just update latch and return
 			if(cu.isEnd()){
-				System.out.println("The end of the beginning! The middle of the end!");
+				if(containingProcessor.getDebugMode().charAt(3) != '0') {
+					System.out.println("The end of the beginning! The middle of the end!");
+				}
 
 				//Update EX_MA Latch
 				EX_MA_Latch.setPC(OF_EX_Latch.getPC());
@@ -62,10 +67,16 @@ public class Execute {
 			int op2;
 			if(cu.isImmediate()) {
 				op2 = OF_EX_Latch.getImmx();
-				System.out.println("Got immx: " + Integer.toString(op2));
+
+				if(containingProcessor.getDebugMode().charAt(3) != '0') {
+					System.out.println("Got immx: " + Integer.toString(op2));
+				}
 			} else {
 				op2 = OF_EX_Latch.getOp2();
-				System.out.println("Got op2: " + Integer.toString(op2));
+
+				if(containingProcessor.getDebugMode().charAt(3) != '0') {
+					System.out.println("Got op2: " + Integer.toString(op2));
+				}
 			}
 
 			// Execute the ALU part and store result in EX_MA latch
@@ -74,7 +85,9 @@ public class Execute {
 
 			int aluResult = alu.getALUResult();
 			EX_MA_Latch.setALUResult(aluResult);
-			System.out.println("aluResult: " + Integer.toString(aluResult));
+			if(containingProcessor.getDebugMode().charAt(3) != '0') {
+				System.out.println("aluResult: " + Integer.toString(aluResult));
+            }
 
 			// if isDiv write mod to Register x31
 			if(cu.isDiv()){
@@ -97,15 +110,18 @@ public class Execute {
 			}
 			
 			// Printing to debug
-			System.out.println("op1: " + Integer.toString(op1));
-			System.out.println("op2: " + Integer.toString(op2));
-			System.out.println("PC: " + Integer.toString(OF_EX_Latch.getPC()));
-			System.out.println("CU_OPCODE: " + OF_EX_Latch.getControlUnit().getOpCode());
+			if(containingProcessor.getDebugMode().charAt(3) != '0') {
+				System.out.println("op1: " + Integer.toString(op1));
+				System.out.println("op2: " + Integer.toString(op2));
+				System.out.println("PC: " + Integer.toString(OF_EX_Latch.getPC()));
+				System.out.println("CU_OPCODE: " + OF_EX_Latch.getControlUnit().getOpCode());
+            }
 			
-		// debug
-			// Scanner input = new Scanner(System.in);
-			// System.out.print("Enter an EX integer: ");
-			// int number = input.nextInt();
+			if(containingProcessor.getDebugMode().charAt(3) == '2') {
+				Scanner input = new Scanner(System.in);
+				System.out.print("Enter an EX integer: ");
+				int number = input.nextInt();
+            }
 
 
 			//Update EX_MA Latch

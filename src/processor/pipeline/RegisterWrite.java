@@ -43,7 +43,10 @@ public class RegisterWrite {
 			if( cu.isLd() ){
 				result = MA_RW_Latch.getLdResult();
 			}
-			System.out.println("Result: " + Integer.toString(result));
+
+			if(containingProcessor.getDebugMode().charAt(5) != '0') {
+				System.out.println("Result: " + Integer.toString(result));
+			}
 
 			// Get 'rd' from instruction
 			int currentPC = MA_RW_Latch.getPC();
@@ -66,20 +69,26 @@ public class RegisterWrite {
 
 			int rd = Integer.parseInt(rdStr, 2);
 
-			System.out.println("PC: " + Integer.toString(currentPC));
-			System.out.println("rd: " + Integer.toString(rd));
-			System.out.println("CU_OPCODE" + MA_RW_Latch.getControlUnit().getOpCode());
+			if(containingProcessor.getDebugMode().charAt(5) != '0') {
+				System.out.println("PC: " + Integer.toString(currentPC));
+				System.out.println("rd: " + Integer.toString(rd));
+				System.out.println("CU_OPCODE" + MA_RW_Latch.getControlUnit().getOpCode());
+			}
 
 			// If isWb then write back to register
 			if( cu.isWb() ){
-				System.out.println("WRITE!!!!!!!!!!!!!!!");
+
+				if(containingProcessor.getDebugMode().charAt(5) != '0') {
+					System.out.println("WRITE!!!!!!!!!!!!!!!");
+				}
 				containingProcessor.getRegisterFile().setValue(rd, result);
 			}
 			
-		// debug
-			// Scanner input = new Scanner(System.in);
-	    	// System.out.print("Enter any integer to continue: ");
-    		// int number = input.nextInt();
+			if(containingProcessor.getDebugMode().charAt(5) == '2') {
+				Scanner input = new Scanner(System.in);
+				System.out.print("Enter any integer to continue: ");
+				int number = input.nextInt();
+			}
 				
 		}
 		
@@ -87,7 +96,10 @@ public class RegisterWrite {
 		
 		if(MA_RW_Latch.getIsNop()){
 			MA_RW_Latch.setIsNop(false);
-			System.out.println("RW got NOP");
+
+			if(containingProcessor.getDebugMode().charAt(5) != '0') {
+				System.out.println("RW got NOP");
+			}
 		} else {
 			// if not end, then enable IF stage
 			if(containingProcessor.getOFUnit().IF_OF_Latch.getInstruction() != -402653184){

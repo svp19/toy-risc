@@ -30,7 +30,10 @@ public class MemoryAccess {
 		if(EX_MA_Latch.getIsNop()){
 			EX_MA_Latch.setIsNop(false);
 			MA_RW_Latch.setIsNop(true);
-			System.out.println("MA got NOP");
+
+			if(containingProcessor.getDebugMode().charAt(4) != '0') {
+				System.out.println("MA got NOP");
+            }
 		}
 
 		// Start main part of MA
@@ -42,48 +45,56 @@ public class MemoryAccess {
 				int ldResult;
 				ldResult = containingProcessor.getMainMemory().getWord(EX_MA_Latch.getALUResult());
 				MA_RW_Latch.setLdResult(ldResult);
-				System.out.println("getALUResult: " + Integer.toString(EX_MA_Latch.getALUResult()));
-				System.out.println("ldResult: " + Integer.toString(ldResult));
+				if(containingProcessor.getDebugMode().charAt(4) != '0') {
+					System.out.println("getALUResult: " + Integer.toString(EX_MA_Latch.getALUResult()));
+					System.out.println("ldResult: " + Integer.toString(ldResult));
+				}
 			} else if(cu.isSt()) {
 				int location = EX_MA_Latch.getALUResult();
 				int data = EX_MA_Latch.getOp2();
-				System.out.println("location: " + Integer.toString(location));
-				System.out.println("data: " + Integer.toString(data));
+				if(containingProcessor.getDebugMode().charAt(4) != '0') {
+					System.out.println("location: " + Integer.toString(location));
+					System.out.println("data: " + Integer.toString(data));
+				}
 				containingProcessor.getMainMemory().setWord(location, data);
 
-			// debug
-				// Scanner input = new Scanner(System.in);
-				// System.out.print("Stored! Enter an integer to continue: ");
-				// int number = input.nextInt();		
+				if(containingProcessor.getDebugMode().charAt(4) == '2') {
+					Scanner input = new Scanner(System.in);
+					System.out.print("Stored! Enter an integer to continue: ");
+					int number = input.nextInt();		
+				}
 			}
-
+	
+			if(containingProcessor.getDebugMode().charAt(4) == '2') {
+				Scanner input = new Scanner(System.in);
+				System.out.print("Enter an MA integer: ");
+				int number = input.nextInt();
+			}
 			
-		// debug
-			// Scanner input = new Scanner(System.in);
-			// System.out.print("Enter an MA integer: ");
-			// int number = input.nextInt();
-
 			// Update MA_RW Latch
 			MA_RW_Latch.setPC(EX_MA_Latch.getPC());
 			MA_RW_Latch.setInstruction(EX_MA_Latch.getInstruction());
 			MA_RW_Latch.setALUResult(EX_MA_Latch.getALUResult());
 
 			// Printing debug
-			System.out.println("ALUResult: " + Integer.toString(EX_MA_Latch.getALUResult()));
-			System.out.println("CU_OPCODE: " + cu.getOpCode());
-			System.out.println("PC: " + EX_MA_Latch.getPC());
-
+			if(containingProcessor.getDebugMode().charAt(4) == '2') {
+				System.out.println("ALUResult: " + Integer.toString(EX_MA_Latch.getALUResult()));
+				System.out.println("CU_OPCODE: " + cu.getOpCode());
+				System.out.println("PC: " + EX_MA_Latch.getPC());
+			}
+		
 			// Update latches
 			MA_RW_Latch.setControlUnit(cu);
 			
 			EX_MA_Latch.setMA_enable(false);
 			MA_RW_Latch.setRW_enable(true);
 
-		// debug
-			// Scanner input = new Scanner(System.in);
-			// System.out.println("Enter an integer: ");
-			// int number = input.nextInt();
-
+			if(containingProcessor.getDebugMode().charAt(4) == '2') {
+				Scanner input = new Scanner(System.in);
+				System.out.println("Enter an integer: ");
+				int number = input.nextInt();
+			}
+			
 		}
 				
 	}
