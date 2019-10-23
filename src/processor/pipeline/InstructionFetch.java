@@ -26,6 +26,15 @@ public class InstructionFetch {
 
 		if(IF_EnableLatch.isIF_enable())
 		{
+			// Discrete Event Simulation - 
+			// => MemoryRead [Instruction]
+			if(IF_EnableLatch.isIF_busy()){
+				// introduce Nop in cycle
+				
+				IF_OF_Latch.setIsNop(true);
+				return;
+			}
+			
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter();
 			// Check isBranchTaken
 			if( EX_IF_Latch.getIsBranchTaken() ){
