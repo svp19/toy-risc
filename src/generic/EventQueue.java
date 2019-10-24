@@ -8,15 +8,18 @@ import processor.Clock;
 public class EventQueue {
 	
 	PriorityQueue<Event> queue;
+	int val;
 	
 	public EventQueue()
 	{
 		queue = new PriorityQueue<Event>(new EventComparator());
+		val=19;
 	}
 	
 	public void addEvent(Event event)
 	{
 		queue.add(event);
+		System.out.println("HELLO" + queue);
 	}
 
 	public void processEvents()
@@ -26,6 +29,15 @@ public class EventQueue {
 			Event event = queue.poll();
 			event.getProcessingElement().handleEvent(event);
 		}
+	}
+
+	public void printEvents()
+	{
+		// while(queue.isEmpty() == false)
+		// {
+		// 	Event event = queue.poll();
+		// 	System.out.println('1');
+		// }
 	}
 }
 

@@ -15,6 +15,7 @@ import processor.pipeline.RegisterFile;
 import processor.pipeline.RegisterWrite;
 import processor.pipeline.ControlUnit;
 import processor.pipeline.ArithmeticLogicUnit;
+import generic.Simulator;
 
 public class Processor {
 	
@@ -51,6 +52,9 @@ public class Processor {
 
 	// Debug Config
 	String debug;
+
+	//Simulator
+	Simulator simulator;
 	
 	public Processor()
 	{
@@ -80,6 +84,14 @@ public class Processor {
 		numBranchTaken = 0;
 
 		debug = "000000";
+	}
+
+	public void setSimulator(Simulator s){
+		this.simulator = s;
+	}
+
+	public Simulator getSimulator(Simulator s){
+		return this.simulator;
 	}
 
 	public void setDebugMode(String debug) {

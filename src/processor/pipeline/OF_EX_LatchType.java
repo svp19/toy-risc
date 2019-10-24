@@ -14,6 +14,7 @@ public class OF_EX_LatchType {
 	int instruction;
 	ControlUnit controlUnit;
 	boolean isNop;
+	boolean EX_busy;
 
 	public boolean getIsNop() {
 		return this.isNop;
@@ -29,6 +30,14 @@ public class OF_EX_LatchType {
 			this.op1 = -1;
 			this.op2 = -1;
 		}
+	}
+
+	public boolean isEX_busy(){
+		return this.EX_busy;
+	}
+
+	public void setEX_busy(boolean eX_busy){
+		this.EX_busy = eX_busy ;
 	}
 
 	public int getPC() {
@@ -76,6 +85,7 @@ public class OF_EX_LatchType {
 	{
 		EX_enable = false;
 		isNop = false;
+		EX_busy = false;
 	}
 
 	public boolean isEX_enable() {

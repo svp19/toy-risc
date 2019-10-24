@@ -82,7 +82,7 @@ public class MemoryAccess {
 			MA_RW_Latch.setALUResult(EX_MA_Latch.getALUResult());
 
 			// Printing debug
-			if(containingProcessor.getDebugMode().charAt(4) == '2') {
+			if(containingProcessor.getDebugMode().charAt(4) != '0') {
 				System.out.println("ALUResult: " + Integer.toString(EX_MA_Latch.getALUResult()));
 				System.out.println("CU_OPCODE: " + cu.getOpCode());
 				System.out.println("PC: " + EX_MA_Latch.getPC());

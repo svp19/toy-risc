@@ -8,6 +8,7 @@ import processor.Processor;
 import processor.memorysystem.MainMemory;
 import processor.pipeline.RegisterFile;
 import generic.Simulator;
+import generic.EventQueue;
 
 public class Main {
 
@@ -23,6 +24,7 @@ public class Main {
 		
 		Simulator.setDebugMode(args[3]);
 		Simulator.setupSimulation(args[2], processor);
+		Simulator.setEventQueue();
 		Simulator.simulate();
 		
 		processor.printState(0, 10);

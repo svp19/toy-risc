@@ -35,32 +35,36 @@ public class OperandFetch {
         if(IF_OF_Latch.isOF_enable())		
 		{
             if(checkRAW(IF_OF_Latch.getInstruction())){
-
+                
                 // Disable IF-OF stages and enable EX stage
                 if(containingProcessor.getDebugMode().charAt(2) != '0') {
                     System.out.println("Found RAW at PC: " + Integer.toString(IF_OF_Latch.getPC()));
                 }
-
+                
                 this.containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
                 OF_EX_Latch.setEX_enable(true);
                 OF_EX_Latch.setIsNop(true);
-
+                
                 //Increment OF Stall
                 containingProcessor.setNumOFStalls(containingProcessor.getNumOFStalls() + 1);
-
-            // debug
+                
+                // debug
                 // Scanner input = new Scanner(System.in);
                 // System.out.print("Enter an OF integer: ");
                 // int number = input.nextInt();
 
+                //if RAW set OF busy
+                IF_OF_Latch.setOF_busy(true);
                 return;
             } else { // IF Stage should fetch next instruction when data hazard cleared
                 //if end don't enable IF Stage
+                IF_OF_Latch.setOF_busy(false);
                 if( IF_OF_Latch.getInstruction() != -402653184 ){
                     this.containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(true);
                 }
             }
             
+            System.out.println("Entered OF");
             // Set Instruction to Control Unit
 			containingProcessor.getControlUnit().setOpCode(IF_OF_Latch.getInstruction());
             

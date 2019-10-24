@@ -13,6 +13,7 @@ public class EX_MA_LatchType {
 	ControlUnit controlUnit;
 	boolean isNop;
 	boolean isControlNop;
+	boolean MA_busy;
 
 	public boolean getIsNop() {
 		return this.isNop;
@@ -37,10 +38,19 @@ public class EX_MA_LatchType {
 		}
 	}
 
+	public boolean isMA_busy(){
+		return this.MA_busy;
+	}
+
+	public void setEX_busy(boolean mA_busy){
+		this.MA_busy = mA_busy ;
+	}
+
 	public EX_MA_LatchType()
 	{
 		MA_enable = false;
 		isNop = false;
+		MA_busy = false;
 	}
 
 	public int getPC() {

@@ -16,8 +16,8 @@ public class Simulator {
 	static Statistics stats;
 	static String debug;
 
-	public Simulator(){
-		eventQueue = new EventQueue();
+	public static void setEventQueue() {
+		Simulator.eventQueue = new EventQueue();
 	}
 
 	public static void setDebugMode(String debug) {
@@ -116,7 +116,7 @@ public class Simulator {
 			processor.getRWUnit().performRW();
 			processor.getMAUnit().performMA();
 			processor.getEXUnit().performEX();
-			// eventQueue.processEvents();
+			eventQueue.processEvents();
 			processor.getOFUnit().performOF();
 			processor.getIFUnit().performIF();
 			Clock.incrementClock();

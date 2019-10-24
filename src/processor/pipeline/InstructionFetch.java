@@ -1,9 +1,18 @@
 package processor.pipeline;
 
+import processor.Clock;
 import processor.Processor;
 import java.util.Scanner;
 
-public class InstructionFetch {
+import configuration.Configuration;
+import generic.Element;
+import generic.Event;
+import generic.MemoryReadEvent;
+import generic.MemoryResponseEvent;
+import generic.Simulator;
+import generic.Event.EventType;
+
+public class InstructionFetch implements Element{
 	
 	Processor containingProcessor;
 	IF_EnableLatchType IF_EnableLatch;
@@ -28,13 +37,14 @@ public class InstructionFetch {
 		{
 			// Discrete Event Simulation - 
 			// => MemoryRead [Instruction]
-			if(IF_EnableLatch.isIF_busy()){
-				// introduce Nop in cycle
-				
-				IF_OF_Latch.setIsNop(true);
+			if(IF_EnableLatch.isIF_busy()) {
+				// TODO introduce Nop in cycle
+				// if( !IF_OF_Latch.isOF_busy() ){
+				// 	IF_OF_Latch.setIsNop(true);
+				// }
 				return;
 			}
-			
+
 			int currentPC = containingProcessor.getRegisterFile().getProgramCounter();
 			// Check isBranchTaken
 			if( EX_IF_Latch.getIsBranchTaken() ){
@@ -58,18 +68,56 @@ public class InstructionFetch {
 			}
 			
 			// Fetch Instruction, For every new inst it fetches, numIns++;
-			int newInstruction = containingProcessor.getMainMemory().getWord(currentPC);
+			// int newInstruction = containingProcessor.getMainMemory().getWord(currentPC);
 			containingProcessor.setNumIns(containingProcessor.getNumIns() + 1);
 			
-			// Update Latch
-			IF_OF_Latch.setInstruction(newInstruction);
-			IF_OF_Latch.setPC(currentPC);
+			// Add Memory Read Event to Queue
+			Simulator.getEventQueue().addEvent(
+				new MemoryReadEvent(
+					Clock.getCurrentTime() + Configuration.mainMemoryLatency,
+					this,
+					containingProcessor.getMainMemory(),
+					currentPC
+				)
+			);
+			IF_EnableLatch.setIF_busy(true);
+			// TODO update the ollowing line to if(of not busy)
 
-			// Check isBranchTaken
-			containingProcessor.getRegisterFile().setProgramCounter(currentPC + 1);	
-			
+			// Avoids program crash in first cycles
+			IF_OF_Latch.setIsNop(true);
+
+			// Update Latch
+			IF_OF_Latch.setPC(currentPC);
+			System.out.print("PC set to: " + Integer.toString(IF_OF_Latch.getPC()));
+
+			// Increment PC
+			containingProcessor.getRegisterFile().setProgramCounter(currentPC + 1);
+
+			// Update the latches
+			IF_EnableLatch.setIF_enable(false);
+			// IF_OF_Latch.setOF_enable(true);
+
+		}
+	}
+
+	@Override
+	public void handleEvent(Event e){
+		if(IF_OF_Latch.isOF_busy()){
+			e.setEventTime(Clock.getCurrentTime() + 1);
+			Simulator.getEventQueue().addEvent(e);
+		} else {
+			MemoryResponseEvent event = (MemoryResponseEvent) e;
+
+			int newInstruction = event.getValue();
+			IF_OF_Latch.setInstruction(newInstruction);
+			IF_OF_Latch.setOF_enable(true);
+			IF_EnableLatch.setIF_busy(false);
+
+			int currentPC = IF_OF_Latch.getPC();
+
 			// debug
 			if(containingProcessor.getDebugMode().charAt(1) != '0') {
+				System.out.println("-----------------\n");
 				System.out.println("Fetched inst: " + Integer.toString(newInstruction));
 				System.out.println("PC: " + Integer.toString(currentPC));
 			}
@@ -79,16 +127,13 @@ public class InstructionFetch {
 				System.out.print("Enter an integer: ");
 				int number = input.nextInt();
 			}
-			
-			// Update the latches
-			IF_EnableLatch.setIF_enable(false);
-			IF_OF_Latch.setOF_enable(true);
 
 			// Special case for end
 			if( newInstruction == -402653184 ){
 				IF_OF_Latch.setOF_enable(false);
+				IF_EnableLatch.setIF_enable(false);
+
 			}
 		}
 	}
-
 }

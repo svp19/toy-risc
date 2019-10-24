@@ -8,6 +8,7 @@ public class IF_OF_LatchType {
 	//new
 	int PC;
 	boolean isNop;
+	boolean OF_busy;
 
 	public boolean getIsNop() {
 		return this.isNop;
@@ -21,10 +22,19 @@ public class IF_OF_LatchType {
 		}
 	}
 	
+	public boolean isOF_busy(){
+		return OF_busy;
+	}
+
+	public void setOF_busy(boolean oF_busy){
+		this.OF_busy = oF_busy;
+	}
+
 	public IF_OF_LatchType()
 	{
 		OF_enable = false;
 		isNop = false;
+		OF_busy = false;
 	}
 
 	public int getPC() {
