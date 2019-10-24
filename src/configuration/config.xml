@@ -39,5 +39,5 @@
 		<ReplacementPolicy>LRU</ReplacementPolicy>
 	</L2Cache>
 	
-	<MainMemoryLatency>40</MainMemoryLatency>
+	<MainMemoryLatency>3</MainMemoryLatency>
 </Configuration>

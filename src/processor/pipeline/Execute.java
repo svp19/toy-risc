@@ -19,6 +19,13 @@ public class Execute {
 	
 	public void performEX()
 	{
+		if(OF_EX_Latch.isEX_busy()){
+			containingProcessor.getIFUnit().IF_OF_Latch.setOF_busy(true);
+			return;
+		} else {
+			containingProcessor.getIFUnit().IF_OF_Latch.setOF_busy(false);
+		}
+
 		// Print Debug
 		if(containingProcessor.getDebugMode().charAt(0) != '0') {
 			System.out.println("--------EX--------");

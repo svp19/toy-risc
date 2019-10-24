@@ -37,7 +37,7 @@ public class OF_EX_LatchType {
 	}
 
 	public void setEX_busy(boolean eX_busy){
-		this.EX_busy = eX_busy ;
+		this.EX_busy = eX_busy;
 	}
 
 	public int getPC() {

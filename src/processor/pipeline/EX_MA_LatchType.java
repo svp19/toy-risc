@@ -42,7 +42,7 @@ public class EX_MA_LatchType {
 		return this.MA_busy;
 	}
 
-	public void setEX_busy(boolean mA_busy){
+	public void setMA_busy(boolean mA_busy){
 		this.MA_busy = mA_busy ;
 	}
 

@@ -60,7 +60,15 @@ public class MainMemory implements Element{
 		//Memory Write
 		else if(e.getEventType() == EventType.MemoryWrite){
 			MemoryWriteEvent event = (MemoryWriteEvent) e;
-			this.setWord(event.getAddressToWriteTo(), event.getValue());	
+			this.setWord(event.getAddressToWriteTo(), event.getValue());
+			Simulator.getEventQueue().addEvent(
+				new MemoryResponseEvent(
+					Clock.getCurrentTime(), 
+					this, 
+					event.getRequestingElement(), 
+					-1
+				)
+			);	
 		}
 	}
 }
