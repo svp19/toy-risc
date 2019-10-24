@@ -125,7 +125,7 @@ public class OperandFetch {
                 System.out.println("op1Reg: " + op1Reg + " ,op1: " + Integer.toString(op1));
                 System.out.println("op2Reg: " + op2Reg + " ,op2: " + Integer.toString(op2));
                 System.out.println("offSet: " + instStr);
-                System.out.println("branchTarget: " + instInt);
+                System.out.println("branchTarget: " + branchTarget);
                 System.out.println("CU_OPCODE: " + containingProcessor.getControlUnit().getOpCode());
             }
             
@@ -133,6 +133,13 @@ public class OperandFetch {
                 Scanner input = new Scanner(System.in);
                 System.out.print("Enter an OF integer: ");
                 int number = input.nextInt();
+            }
+
+            // Control Interlock
+            int opCodeInt = containingProcessor.getControlUnit().getOpCodeInt();
+            if( opCodeInt > 23 && opCodeInt < 29){ // if control flow instruction
+                // Disable IF Stage
+                containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
             }
 
             // Update Latch

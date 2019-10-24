@@ -139,6 +139,15 @@ public class Execute {
 			OF_EX_Latch.setEX_enable(false);
 			EX_MA_Latch.setMA_enable(true);
 
+			// Control Interlock
+            int opCodeInt = cu.getOpCodeInt();
+            if( opCodeInt > 23 && opCodeInt < 29){ // if control flow instruction
+                // Disable IF Stage
+                containingProcessor.getIFUnit().IF_EnableLatch.setIF_enable(false);
+				//Disable OF Stage
+				containingProcessor.getOFUnit().IF_OF_Latch.setOF_enable(false);
+			}
+			
 			//if isBranchTaken
 			// * Introduce nops in IF_OF & OF_EX and enable IF
 			// * Predicted Branch Not Taken

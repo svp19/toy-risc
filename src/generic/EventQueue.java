@@ -19,7 +19,9 @@ public class EventQueue {
 	public void addEvent(Event event)
 	{
 		queue.add(event);
-		System.out.println("HELLO" + queue);
+		if(Simulator.debug.charAt(0) != 0) {
+			System.out.println("Added in Q: " + event);
+		}
 	}
 
 	public void processEvents()
@@ -27,6 +29,9 @@ public class EventQueue {
 		while(queue.isEmpty() == false && queue.peek().getEventTime() <= Clock.getCurrentTime())
 		{
 			Event event = queue.poll();
+			if(Simulator.debug.charAt(0) != 0) {
+				System.out.println("Popped Q: " + event);
+			}
 			event.getProcessingElement().handleEvent(event);
 		}
 	}
