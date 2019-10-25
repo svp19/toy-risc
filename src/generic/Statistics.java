@@ -23,8 +23,10 @@ public class Statistics {
 		{
 			PrintWriter writer = new PrintWriter(statFile);
 			
+			Double ipc = (double) numberOfInstructions / numberOfCycles;
 			writer.println("Number of instructions executed = " + numberOfInstructions);
 			writer.println("Number of cycles taken = " + numberOfCycles);
+			writer.println("IPC = " + ipc);
 			writer.println("Number of OF stalls taken = " + numOFStalls);
 			writer.println("Number of Wrong Instructions executed = " + numWrongInstruction);
 
