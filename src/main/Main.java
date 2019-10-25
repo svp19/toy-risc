@@ -13,16 +13,24 @@ import generic.EventQueue;
 public class Main {
 
 	public static void main(String[] args) {
-		if(args.length != 4)
+		if(args.length > 4 || args.length < 3)
 		{
 			Misc.printErrorAndExit("usage: java -jar <path-to-jar-file> <path-to-config-file> <path-to-stat-file> <path-to-object-file> <print-debug>\n");
+		}
+		
+		String debugMode;
+		//default 000000 debug
+		if(args.length < 4){
+			debugMode = "000000";
+		} else {
+			debugMode = args[3];
 		}
 		
 		Configuration.parseConfiguratioFile(args[0]);
 		
 		Processor processor = new Processor();
 		
-		Simulator.setDebugMode(args[3]);
+		Simulator.setDebugMode(debugMode);
 		Simulator.setupSimulation(args[2], processor);
 		Simulator.setEventQueue();
 		Simulator.simulate();
