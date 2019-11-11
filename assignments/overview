@@ -1,0 +1,35 @@
+processor/memorysystem
+    -> Implement class Cache
+       
+        * static linesize = 4
+        * static assoc = 2
+        * int cacheSize
+        * CacheLine arr[256] (max 256 lines for cache size 1kB)
+        * int latency
+        * int numLines = cacheSize/linesize
+
+        // functions
+        * cacheRead(int address)
+            - Check if address present:
+                => return value (int 4B)
+            - else
+                => call handleCacheMiss()
+        * cacheWrite(int address, int value)
+            - if line present:
+                => write to Line->mainMemory
+            - else:
+                => handle handleCacheMiss()
+
+        * handleCacheMiss(int address)
+            - request from main memory
+
+        * handleResponse()
+            - place response in cache 
+
+        What if memoryWriteEvent pending while newly overwritten cacheLine is removed.
+     
+
+    -> Implement class CacheLine
+
+        * int data[1?]
+        * int tag
