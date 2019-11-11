@@ -3,6 +3,8 @@ n:
 	10
 	.text
 main:
+    addi %x0, 10, %x3
+loop:
 	load %x0, 0, %x10
 	load %x0, 1, %x10
 	load %x0, 2, %x10
@@ -20,4 +22,6 @@ main:
 	load %x0, 14, %x10
 	load %x0, 15, %x10
 	load %x0, 16, %x10
+    subi %x3, 1, %x3
+    blt %x0, %x3, loop
     end

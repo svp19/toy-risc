@@ -72,15 +72,20 @@ public class InstructionFetch implements Element{
 			containingProcessor.setNumIns(containingProcessor.getNumIns() + 1);
 			
 			// Add Memory Read Event to Queue
-			Simulator.getEventQueue().addEvent(
-				new MemoryReadEvent(
-					Clock.getCurrentTime() + Configuration.mainMemoryLatency,
-					this,
-					containingProcessor.getMainMemory(),
-					currentPC
-				)
-			);
+			// Simulator.getEventQueue().addEvent(
+			// 	new MemoryReadEvent(
+			// 		Clock.getCurrentTime() + Configuration.mainMemoryLatency,
+			// 		this,
+			// 		containingProcessor.getMainMemory(),
+			// 		currentPC
+			// 	)
+			// );
+			// Response obtained in handleEvent
+			containingProcessor.getL1i_cache().cacheRead(currentPC, this);
+			/////////////////////////////
+
 			IF_EnableLatch.setIF_busy(true);
+			
 			// TODO update the ollowing line to if(of not busy)
 
 			// Avoids program crash in first cycles
