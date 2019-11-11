@@ -86,20 +86,19 @@ public class Cache implements Element{
         
         
         for(int index=setIndex; index<setIndex+associativity; ++index){
-            System.out.println(index);
             if(!cacheLine[index].getIsEmpty()){
-                System.out.println(cacheLine[index]);
                 if(cacheLine[index].getTag() == tag){
                     int value = cacheLine[index].getLine()[0];  // For now return line[0] as only one word a line
 
-                    // Add Memory Response Event to Queue for IF Unit
+                    // Add Memory Response Event to Queue for IF/MA Unit
                     Simulator.getEventQueue().addEvent(
                         new MemoryResponseEvent(
                             Clock.getCurrentTime() + latency,
                             this,
                             requestingElement,
                             value,
-                            address
+                            address,
+                            true
                         )
                     );
                 }
@@ -111,6 +110,47 @@ public class Cache implements Element{
         return;
     }
 
+    public void cacheWrite(int address, int value, Element requestingElement){
+        String binary = to32BitString(address);
+        int tag =findTag(binary);
+        int setIndex = findSetIndex(binary);
+
+        for(int index=setIndex; index<setIndex+associativity; ++index){
+            if(!cacheLine[index].getIsEmpty()){
+                if(cacheLine[index].getTag() == tag){
+                    // Write value to Line
+                    cacheLine[index].setData(0, value);
+
+                    // Add Memory Write Event to Queue
+                    Simulator.getEventQueue().addEvent(
+                        new MemoryWriteEvent(
+                            Clock.getCurrentTime() + Configuration.mainMemoryLatency,
+                            this,
+                            containingProcessor.getMainMemory(),
+                            address,
+                            value
+                        )
+                    );
+
+                    //Send response to MA Unit
+                    Simulator.getEventQueue().addEvent(
+                        new MemoryResponseEvent(
+                            Clock.getCurrentTime() + latency,
+                            this,
+                            requestingElement,
+                            -1
+                        )
+                    );
+
+                    return; // Return true for pipeline to continue
+                }
+            }
+        }
+
+        handleCacheMiss(address, value);
+        return; // Stall pipeline
+    }
+
     public void handleCacheMiss(int address){
         // address => currentPC for L1i and location for L1d
         // Add Memory Read Event to Queue
@@ -120,11 +160,20 @@ public class Cache implements Element{
         return;
     }
 
-    // @Override
+    public void handleCacheMiss(int address, int newValue){
+        // address => currentPC for L1i and location for L1d
+        // Add Memory Read Event to Queue
+        Simulator.getEventQueue().addEvent(
+            new MemoryReadEvent(Clock.getCurrentTime() + Configuration.mainMemoryLatency, this,containingProcessor.getMainMemory(),address, newValue)
+        );  
+        return;
+    }
+
+    @Override
 	public void handleEvent(Event e) {
+        MemoryResponseEvent event = (MemoryResponseEvent) e;
         if(isL1i){
             // forward MemoryResponse for Instruction Fetch
-            MemoryResponseEvent event = (MemoryResponseEvent) e;
             event.setEventTime(Clock.getCurrentTime() + latency);
             event.setRequestingElement(this);
             event.setProcessingElement(containingProcessor.getIFUnit());
@@ -143,7 +192,75 @@ public class Cache implements Element{
             // write
             cacheLine[setIndex + writeIndex].setData(0, event.getValue());
             cacheLine[setIndex + writeIndex].setTag(tag);
-        }
+            return;
         
+        } else { //isL1d, FOR CACHE WRITE
+
+            // if cacheRead
+            System.out.println("OLAAAAAALALALALLALALA\n");
+            if(event.getIsResponseForRead()){
+                // forward MemoryResponse for MA Unit
+                event.setEventTime(Clock.getCurrentTime() + latency);
+                event.setRequestingElement(this);
+                event.setProcessingElement(containingProcessor.getMAUnit());
+                Simulator.getEventQueue().addEvent(event);
+
+                System.out.println(event.getValue());
+                // insert Value of Memory Response into Cache
+                int address = event.getAddress();
+                String binary = to32BitString(address);
+                int tag = findTag(binary);
+                int setIndex = findSetIndex(binary);
+                int writeIndex = LRU[setIndex];
+
+                // update LRU 
+                LRU[setIndex] = 1 - LRU[setIndex];
+
+                // write
+                cacheLine[setIndex + writeIndex].setData(0, event.getValue());
+                cacheLine[setIndex + writeIndex].setTag(tag);
+                return;
+            }
+
+            //if cache Write!!!!
+            // if Response of cacheWrite MemoryWrite, do nothing
+            if(event.getValue() == -1)
+                return;
+            
+            // insert Value of Memory Response into Cache
+            int address = event.getAddress();
+            String binary = to32BitString(address);
+            int tag = findTag(binary);
+            int setIndex = findSetIndex(binary);
+            int writeIndex = LRU[setIndex];
+
+            // update LRU 
+            LRU[setIndex] = 1 - LRU[setIndex];
+
+            // write to cache
+            cacheLine[setIndex + writeIndex].setData(0, event.getValue());
+            cacheLine[setIndex + writeIndex].setTag(tag);
+
+            // write back to Main Memory (parallely)
+            Simulator.getEventQueue().addEvent(
+                new MemoryWriteEvent(
+                    Clock.getCurrentTime() + Configuration.mainMemoryLatency,
+                    this,
+                    containingProcessor.getMainMemory(),
+                    address,
+                    event.getValue()
+                )
+            );
+
+            //Send response to MA Unit
+            Simulator.getEventQueue().addEvent(
+                new MemoryResponseEvent(
+                    Clock.getCurrentTime() + latency,
+                    this,
+                    containingProcessor.getMAUnit(),
+                    -1
+                )
+            );
+        }
 	}
 }

@@ -63,14 +63,15 @@ public class MemoryAccess implements Element{
 				int ldResult;
 				// ldResult = containingProcessor.getMainMemory().getWord();
 				
-				Simulator.getEventQueue().addEvent(
-					new MemoryReadEvent(
-						Clock.getCurrentTime() + Configuration.mainMemoryLatency,
-						this,
-						containingProcessor.getMainMemory(),
-						EX_MA_Latch.getALUResult() // payload
-					)
-				);
+				// Simulator.getEventQueue().addEvent(
+				// 	new MemoryReadEvent(
+				// 		Clock.getCurrentTime() + Configuration.mainMemoryLatency,
+				// 		this,
+				// 		containingProcessor.getMainMemory(),
+				// 		EX_MA_Latch.getALUResult() // payload
+				// 	)
+				// );
+				containingProcessor.getL1d_cache().cacheRead(EX_MA_Latch.getALUResult(), this);
 
 				// Set EX busy, Set RW nop and return
 				containingProcessor.getOFUnit().OF_EX_Latch.setEX_busy(true);
@@ -91,15 +92,17 @@ public class MemoryAccess implements Element{
 				}
 
 				// Create MemoryWrite Event
-				Simulator.getEventQueue().addEvent(
-					new MemoryWriteEvent(
-						Clock.getCurrentTime() + Configuration.mainMemoryLatency,
-						this,
-						containingProcessor.getMainMemory(),
-						location,
-						data
-					)
-				);
+				// Simulator.getEventQueue().addEvent(
+				// 	new MemoryWriteEvent(
+				// 		Clock.getCurrentTime() + Configuration.mainMemoryLatency,
+				// 		this,
+				// 		containingProcessor.getMainMemory(),
+				// 		location,
+				// 		data
+				// 	)
+				// );
+
+				containingProcessor.getL1d_cache().cacheWrite(location, data, this);
 
 				// Set EX busy, Set RW nop and return
 				containingProcessor.getOFUnit().OF_EX_Latch.setEX_busy(true);

@@ -24,6 +24,7 @@ public class Processor {
 	RegisterFile registerFile;
 	MainMemory mainMemory;
 	Cache L1i_cache;
+	Cache L1d_cache;
 	
 	IF_EnableLatchType IF_EnableLatch;
 	IF_OF_LatchType IF_OF_Latch;
@@ -64,6 +65,7 @@ public class Processor {
 		registerFile = new RegisterFile();
 		mainMemory = new MainMemory();
 		L1i_cache = new Cache(this, Configuration.L1i_latency, Configuration.L1i_numberOfLines, true);
+		L1d_cache = new Cache(this, Configuration.L1d_latency, Configuration.L1d_numberOfLines, false);
 		
 		IF_EnableLatch = new IF_EnableLatchType();
 		IF_OF_Latch = new IF_OF_LatchType();
@@ -90,6 +92,15 @@ public class Processor {
 		debug = "000000";
 	}
 
+
+	public Cache getL1d_cache() {
+		return this.L1d_cache;
+	}
+
+	public void setL1d_cache(Cache L1d_cache) {
+		this.L1d_cache = L1d_cache;
+	}
+	
 	public Cache getL1i_cache() {
 		return this.L1i_cache;
 	}
