@@ -62,7 +62,7 @@ public class Cache implements Element{
     public int findTag(String binary){
         //find tag
         String tagStr = binary.substring(0, 32-numSetIndexBits);
-        int tag = Integer.parseInt(tagStr);
+        int tag = Integer.parseInt(tagStr, 2);
         System.out.println("tag: " + tagStr);
         return tag;
     }

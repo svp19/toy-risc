@@ -1,5 +1,5 @@
-Number of instructions executed = 277
-Number of cycles taken = 11758
-IPC = 0.023558428304133357
+Number of instructions executed = 29
+Number of cycles taken = 1217
+IPC = 0.0238290879211175
 Number of OF stalls taken = 0
-Number of Wrong Instructions executed = 176
+Number of Wrong Instructions executed = 10
