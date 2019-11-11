@@ -1,6 +1,7 @@
 package processor;
 
 import processor.memorysystem.MainMemory;
+import processor.memorysystem.Cache;
 import processor.pipeline.EX_IF_LatchType;
 import processor.pipeline.EX_MA_LatchType;
 import processor.pipeline.Execute;
@@ -15,12 +16,14 @@ import processor.pipeline.RegisterFile;
 import processor.pipeline.RegisterWrite;
 import processor.pipeline.ControlUnit;
 import processor.pipeline.ArithmeticLogicUnit;
+import configuration.Configuration;
 import generic.Simulator;
 
 public class Processor {
 	
 	RegisterFile registerFile;
 	MainMemory mainMemory;
+	Cache L1i_cache;
 	
 	IF_EnableLatchType IF_EnableLatch;
 	IF_OF_LatchType IF_OF_Latch;
@@ -60,6 +63,7 @@ public class Processor {
 	{
 		registerFile = new RegisterFile();
 		mainMemory = new MainMemory();
+		L1i_cache = new Cache(this, Configuration.L1i_latency, Configuration.L1i_numberOfLines, true);
 		
 		IF_EnableLatch = new IF_EnableLatchType();
 		IF_OF_Latch = new IF_OF_LatchType();
@@ -84,6 +88,14 @@ public class Processor {
 		numBranchTaken = 0;
 
 		debug = "000000";
+	}
+
+	public Cache getL1i_cache() {
+		return this.L1i_cache;
+	}
+
+	public void setL1i_cache(Cache L1i_cache) {
+		this.L1i_cache = L1i_cache;
 	}
 
 	public void setSimulator(Simulator s){
