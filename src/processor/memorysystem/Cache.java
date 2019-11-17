@@ -83,14 +83,16 @@ public class Cache implements Element{
         String binary = to32BitString(address);
         int tag =findTag(binary);
         int setIndex = findSetIndex(binary);
+        System.out.println("Searching in Set Index: " + Integer.toString(setIndex));
         
-        
-        for(int index=setIndex; index<setIndex+associativity; ++index){
+        int lineIndex = setIndex * associativity;
+        for(int index=lineIndex; index<lineIndex+associativity; ++index){
             if(!cacheLine[index].getIsEmpty()){
+                System.out.println("Searching for Tag: " + Integer.toString(tag));
                 if(cacheLine[index].getTag() == tag){
                     int value = cacheLine[index].getLine()[0];  // For now return line[0] as only one word a line
-
                     // Add Memory Response Event to Queue for IF/MA Unit
+
                     Simulator.getEventQueue().addEvent(
                         new MemoryResponseEvent(
                             Clock.getCurrentTime() + latency,
@@ -101,13 +103,23 @@ public class Cache implements Element{
                             true
                         )
                     );
+                    System.out.println("Cache Read Hit!\n");
+                    return;
                 }
             }
         }
 
         // address not present in cache
+        System.out.println("Cache Read Miss\n");
         handleCacheMiss(address);
         return;
+    }
+
+
+    public void printCache(){
+        for(int i=0; i<numLines; ++i){
+            cacheLine[i].printLine();
+        }
     }
 
     public void cacheWrite(int address, int value, Element requestingElement){
@@ -115,7 +127,8 @@ public class Cache implements Element{
         int tag =findTag(binary);
         int setIndex = findSetIndex(binary);
 
-        for(int index=setIndex; index<setIndex+associativity; ++index){
+        int lineIndex = setIndex * associativity;        
+        for(int index=lineIndex; index<lineIndex+associativity; ++index){
             if(!cacheLine[index].getIsEmpty()){
                 if(cacheLine[index].getTag() == tag){
                     // Write value to Line
@@ -190,8 +203,8 @@ public class Cache implements Element{
             LRU[setIndex] = 1 - LRU[setIndex];
 
             // write
-            cacheLine[setIndex + writeIndex].setData(0, event.getValue());
-            cacheLine[setIndex + writeIndex].setTag(tag);
+            cacheLine[setIndex*associativity + writeIndex].setData(0, event.getValue());
+            cacheLine[setIndex*associativity + writeIndex].setTag(tag);
             return;
         
         } else { //isL1d, FOR CACHE WRITE
@@ -217,8 +230,8 @@ public class Cache implements Element{
                 LRU[setIndex] = 1 - LRU[setIndex];
 
                 // write
-                cacheLine[setIndex + writeIndex].setData(0, event.getValue());
-                cacheLine[setIndex + writeIndex].setTag(tag);
+                cacheLine[setIndex*associativity + writeIndex].setData(0, event.getValue());
+                cacheLine[setIndex*associativity + writeIndex].setTag(tag);
                 return;
             }
 
@@ -234,12 +247,13 @@ public class Cache implements Element{
             int setIndex = findSetIndex(binary);
             int writeIndex = LRU[setIndex];
 
+            
             // update LRU 
             LRU[setIndex] = 1 - LRU[setIndex];
 
             // write to cache
-            cacheLine[setIndex + writeIndex].setData(0, event.getValue());
-            cacheLine[setIndex + writeIndex].setTag(tag);
+            cacheLine[setIndex*associativity + writeIndex].setData(0, event.getValue());
+            cacheLine[setIndex*associativity + writeIndex].setTag(tag);
 
             // write back to Main Memory (parallely)
             Simulator.getEventQueue().addEvent(

@@ -28,6 +28,7 @@ public class CacheLine {
 
     public void setData(int i, int data) {
         this.data[i] = data;
+        isEmpty = false;
     }
 
     public int getTag() {
@@ -36,7 +37,11 @@ public class CacheLine {
 
     public void setTag(int tag) {
         this.tag = tag;
+        isEmpty = false;
     }
 
+    public void printLine(){
+        System.out.println(data[0] + ", " + tag);
+    }
     
 }

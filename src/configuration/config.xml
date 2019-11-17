@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Configuration>
 	<FunctionalUnits>
-		<ALU>
+		<ALU>3
 			<Count>2</Count>
 			<Latency>1</Latency>
 			<ReciprocalOfThroughput>1</ReciprocalOfThroughput>
@@ -19,15 +19,15 @@
 	</FunctionalUnits>
 	
 	<L1iCache>
-		<NumberOfLines>256</NumberOfLines>
-		<Latency>8</Latency>
+		<NumberOfLines>2</NumberOfLines>
+		<Latency>1</Latency>
 		<Associativity>2</Associativity>
 		<ReplacementPolicy>LRU</ReplacementPolicy>
 	</L1iCache>
 	
 	<L1dCache>
 		<NumberOfLines>2</NumberOfLines>
-		<Latency>200</Latency>
+		<Latency>1</Latency>
 		<Associativity>2</Associativity>
 		<ReplacementPolicy>LRU</ReplacementPolicy>
 	</L1dCache>
@@ -39,5 +39,5 @@
 		<ReplacementPolicy>LRU</ReplacementPolicy>
 	</L2Cache>
 	
-	<MainMemoryLatency>40</MainMemoryLatency>
+	<MainMemoryLatency>4</MainMemoryLatency>
 </Configuration>

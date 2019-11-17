@@ -135,9 +135,11 @@ public class Simulator {
 			if(debug.charAt(0) != '0') {
 				System.out.println("--------  --------");
 				System.out.println("\n\n");
+				System.out.println("--------------------- CACHE ----------------");
+				processor.getL1i_cache().printCache();
 			}
 
-			// set end state for processor
+			// set end state for processorAdded in Q: generic.MemoryReadEvent@73a8dfcc
 			setSimulationComplete(processor.getIsEnd());
 		}
 		

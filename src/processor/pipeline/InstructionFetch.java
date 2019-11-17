@@ -30,7 +30,7 @@ public class InstructionFetch implements Element{
 	{	
 		// Print Debug
 		if(containingProcessor.getDebugMode().charAt(0) != '0') {
-			System.out.println("--------IF--------");
+			System.out.println("--------IF-------\n-");
 		}
 
 		if(IF_EnableLatch.isIF_enable())
@@ -80,8 +80,13 @@ public class InstructionFetch implements Element{
 			// 		currentPC
 			// 	)
 			// );
+			// Print Debug
+			if(containingProcessor.getDebugMode().charAt(0) != '0') {
+				System.out.println("Request PC: " + Integer.toString(currentPC));
+			}
 			// Response obtained in handleEvent
 			containingProcessor.getL1i_cache().cacheRead(currentPC, this);
+			
 			/////////////////////////////
 
 			IF_EnableLatch.setIF_busy(true);
