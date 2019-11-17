@@ -1,4 +1,0 @@
-Number of instructions executed = 4001
-Number of cycles taken = 4005
-Number of OF stalls taken = 0
-Number of Wrong Instructions executed = 0

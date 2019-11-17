@@ -1,7 +1,0 @@
-# Cache Size: 2
-
-Number of instructions executed = 9
-Number of cycles taken = 49
-IPC = 0.1836734693877551
-Number of OF stalls taken = 0
-Number of Wrong Instructions executed = 0

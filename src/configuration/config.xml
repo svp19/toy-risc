@@ -19,15 +19,15 @@
 	</FunctionalUnits>
 	
 	<L1iCache>
-		<NumberOfLines>2</NumberOfLines>
-		<Latency>1</Latency>
+		<NumberOfLines>256</NumberOfLines>
+		<Latency>8</Latency>
 		<Associativity>2</Associativity>
 		<ReplacementPolicy>LRU</ReplacementPolicy>
 	</L1iCache>
 	
 	<L1dCache>
-		<NumberOfLines>2</NumberOfLines>
-		<Latency>1</Latency>
+		<NumberOfLines>256</NumberOfLines>
+		<Latency>8</Latency>
 		<Associativity>2</Associativity>
 		<ReplacementPolicy>LRU</ReplacementPolicy>
 	</L1dCache>
@@ -39,5 +39,5 @@
 		<ReplacementPolicy>LRU</ReplacementPolicy>
 	</L2Cache>
 	
-	<MainMemoryLatency>4</MainMemoryLatency>
+	<MainMemoryLatency>40</MainMemoryLatency>
 </Configuration>
